@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18fef8e5-a6da-4fbb-bfe7-d8e9f8ce1530" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/graphic/Data.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/graphic/Drawable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/graphic/Render.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/logic/GameManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/logic/GamePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/segments/Ball.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/segments/Brick.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphic/GameFrame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Segment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphic/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphic/Data.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphic/Drawable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphic/Drawable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/segments/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/segments/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Brick.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,17 +23,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2dViuW1fhhfEqQzj5UYhSVgMR7S" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -44,7 +44,9 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/NoteBook/IdeaProjects/AP2"
   }
 }]]></component>
   <component name="RunManager">
@@ -79,6 +81,38 @@
           <url>file://$PROJECT_DIR$/src/Main.java</url>
           <line>2</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Application.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/graphic/Data.java</url>
+          <line>35</line>
+          <properties class="graphic.Data" method="addSegment">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/model/Ball.java</url>
+          <line>17</line>
+          <properties class="model.Ball">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/model/Ball.java</url>
+          <line>24</line>
+          <properties class="model.Ball" method="draw">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
