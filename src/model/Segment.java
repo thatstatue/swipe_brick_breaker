@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class Segment extends JLabel implements Drawable {
-    int x, y, width, height;
+    protected int x, y, width, height;
     protected BufferedImage background;
 
     public Segment(int x, int y){

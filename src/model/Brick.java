@@ -1,19 +1,27 @@
 package model;
 
 import graphic.Render;
+import logic.GamePanel;
 
 import java.awt.*;
 
 public class Brick extends Segment {
     int weight;
-    private static final int BRICK_WIDTH = 98;
-    private static final int BRICK_HEIGHT = 48;
+    public static final int BRICK_WIDTH = 98;
+    public static final int BRICK_HEIGHT = 48;
+
+    public void explode(){
+        GamePanel.bricks.remove(this);
+
+    }
 
 
 
     public Brick(int x, int y, int weight) {
         super(x, y);
         this.weight = weight;
+        this.width = BRICK_WIDTH;
+        this.height = BRICK_HEIGHT;
         this.color = Render.BRICK_DEFAULT_COLOR;
     }
 
