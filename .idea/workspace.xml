@@ -5,15 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18fef8e5-a6da-4fbb-bfe7-d8e9f8ce1530" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/logic/Intersection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Guideline.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/logic/Config.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/IntersectionControl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Time.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/items/Item.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/items/Speed.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/items/newBall.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Application.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/Intersection.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Ball.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Brick.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Segment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Segment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Application.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +51,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/NoteBook/IdeaProjects/AP2"
+    "last_opened_file_path": "C:/Users/NoteBook/IdeaProjects/BP-final/src"
   }
 }]]></component>
   <component name="RunManager">
@@ -83,13 +88,8 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/project/Application.java</url>
-          <line>60</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/model/Ball.java</url>
-          <line>75</line>
+          <line>156</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
@@ -103,7 +103,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/model/Ball.java</url>
-          <line>74</line>
+          <line>155</line>
           <properties class="model.Ball">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
