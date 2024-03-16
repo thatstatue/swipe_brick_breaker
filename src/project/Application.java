@@ -15,10 +15,8 @@ public class Application implements Runnable {
 
     public static JFrame jFrame;
     public static JPanel jPanel;
+    private GameManager gameManager;
 
-    public static void gameOver(){
-        jFrame.remove(GameManager.gamePanel);
-    }
 
     @Override
     public void run() {
@@ -31,11 +29,12 @@ public class Application implements Runnable {
         jFrame.setLocationRelativeTo(null);
         jFrame.setResizable(false);
 
-        new GameManager("your name").playNewGame();
+        gameManager =new GameManager("your name");
+        gameManager.playNewGame();
 
 
 
     }
 
-
+//todo: if num of hits > 20 in a sec :
 }

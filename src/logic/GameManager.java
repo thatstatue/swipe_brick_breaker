@@ -18,20 +18,20 @@ public class GameManager {
     public static Timer timer;
     public static boolean ballsOnMove;
     public static int ballsOnMoveNumber ,  start15secs;
-    private static boolean count15sec;
+    public static boolean count15sec;
 
     public GameManager(String playerName){
         this.playerName = new JLabel("    " +playerName);
     }
 
     public void playNewGame(){
-
+        if (gamePanel!= null) {
+            Application.jPanel.remove(gamePanel);
+        }
         gamePanel = new GamePanel();
         Application.jPanel.add(gamePanel);
         playerName.setBounds(5, 0, 200, 30);
         playerName.setFont(new Font("New Roman", Font.BOLD, 21));
-//        playerName.setLocation(400, 200);
-//        playerName.setMaximumSize(new Dimension(200,70));
         playerName.setText("PLAYER : NAME");
         gamePanel.add(playerName);
 
@@ -78,6 +78,7 @@ public class GameManager {
             }
         });
 
+
         Application.jPanel.add(gamePanel);
 
         timer = new Timer(20, new ActionListener() {
@@ -89,15 +90,22 @@ public class GameManager {
                     ballsOnMoveNumber++;
                 }else {
                     ballsOnMoveNumber = 0;
-                    gamePanel.moveBricks();
+                    boolean isGameOver = gamePanel.moveBricks();
                     gamePanel.moveItems();
+                    if (isGameOver){
+                        gameOver();
+                    }
+
                 }
                 if (twentyMSs % 50 == 0){
                     gamePanel.moveTime();
                 }
                 if (count15sec){
-                    if (twentyMSs - start15secs == 15 * 50){
+                    if (twentyMSs - start15secs >= 15 * 50){
                         Ball.ballSpeed = Config.BALL_SPEED;
+                        for (Ball ball : gamePanel.getBalls()){
+                            ball.setSpeed(Ball.ballSpeed);
+                        }
                         count15sec = false;
                         start15secs = 0;
                     }
@@ -113,6 +121,26 @@ public class GameManager {
 
     public int getStartedNumber() {
         return ballsOnMoveNumber;
+    }
+    void gameOver(){
+        gamePanel.gameOver();
+        String ans = showGameOverPopup();
+        switch (ans){
+            case "New Game" -> playNewGame();
+//            case "Preferences" ->
+        }
+
+        timer.stop();
+    }
+    public String showGameOverPopup() {
+        String[] options = new String[]{"New Game", "Preferences", "Menu"};
+        return options[JOptionPane.showOptionDialog(Application.jFrame,
+                "                            GAME OVER", "game status",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION,
+                null, options, "New Game")];
+    }
+    public void buildGame(){
+
     }
 
     public void setStartedNumber(int startedNumber) {
