@@ -16,7 +16,11 @@ public class Speed extends Item {
     @Override
     public void catched() {
         GameManager.start15secs = GameManager.twentyMSs;
-        Ball.ballSpeed *= 2;
+        GameManager.count15sec = true;
+        Ball.setBallSpeed(Ball.getBallSpeed() * 2);
+        for (Ball ball :GamePanel.balls){
+            ball.setSpeed(Ball.ballSpeed);
+        }
         GamePanel.items.remove(this);
     }
     @Override

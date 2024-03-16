@@ -15,7 +15,7 @@ public class GamePanel extends JPanel {
     private Random random;
     private int turn;
     private Time time;
-    public static int addedBalls;
+    public static int addedBalls = 1;
     public static ArrayList<Ball> balls , newBalls;
     public static ArrayList<Brick> bricks;
     public static ArrayList<Item> items;
@@ -31,10 +31,7 @@ public class GamePanel extends JPanel {
         time = new Time(500, 25);
         balls = new ArrayList<>();
 
-        for (int i = 0 ; i< 5; i++){
-            Ball ball = new Ball(280, 600);
-            balls.add(ball);
-        }
+        balls.add(new Ball(280, 600));
 
         bricks = new ArrayList<>();
         Brick brick1 = new Brick(randX(), 100, random.nextInt(1,4));
@@ -51,7 +48,7 @@ public class GamePanel extends JPanel {
     }
     private int randX(){
         int randX = random.nextInt(Application.MAIN_PANEL_WIDTH / Brick.BRICK_WIDTH);
-        return randX *= Brick.BRICK_WIDTH;
+        return randX * Brick.BRICK_WIDTH;
     }
 
     public Ball getFirstBall(){
@@ -65,14 +62,22 @@ public class GamePanel extends JPanel {
             ball.setDegree(Guideline.theta);
         }
     }
-    public void moveBricks(){
+    public boolean moveBricks(){
         for (Brick brick : bricks){
             brick.move();
-            if (getY()>= 600 ){
-                Application.gameOver();
+            if (brick.getY()>= 600- Brick.BRICK_HEIGHT ){
+                return true;
             }
         }
+        return false;
     }
+
+    void gameOver(){
+        this.setBackground(Color.gray);
+    }
+
+
+
     public void moveTime(){
         time.move();
     }
@@ -109,26 +114,34 @@ public class GamePanel extends JPanel {
     }
     private void nextTurn(){ //todo: improve fps
         turn ++;
+
+        //balls added
+        int sp = Ball.getBallSpeed();
         for (int i = 0 ; i < addedBalls; i ++) {
             Ball ball = new Ball(Ball.xLocation);
             balls.add(ball);
         }
-        addedBalls = 0;
+        Ball.setBallSpeed(sp);
+        addedBalls = 1;
+        for (Ball ball : balls){
+            ball.setSpeed(Ball.ballSpeed);
+        }
+
+        //move bricks down one height
         for (Brick brick: bricks){
             brick.setY(brick.getY()+ Brick.BRICK_HEIGHT);
         }
 
+
         int isAddBall = random.nextInt(turn);
         for (int i = 0 ; i < random.nextInt(3); i++){
-
             if (isAddBall != turn - 1){
                 int x = random.nextInt(50, Application.MAIN_PANEL_WIDTH - 50);
                 int y = random.nextInt(50, Ball.yLocation - 50);
                 items.add(new newBall(x, y));
             }
-
         }
-        if (isAddBall %6 == 0){//todo: debug
+        if (isAddBall %6 == 0){
             int x = random.nextInt(50, Application.MAIN_PANEL_WIDTH - 50);
             int y = random.nextInt(50, Ball.yLocation - 50);
             items.add(new Speed(x , y));
@@ -157,7 +170,7 @@ public class GamePanel extends JPanel {
         this.guideline = guideline;
     }
 
-    public static ArrayList<Ball> getBalls() {
+    public ArrayList<Ball> getBalls() {
         return balls;
     }
 
@@ -168,7 +181,6 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
 
 //        g2d.setPaint(Color.yellow);
 //        g2d.fillRect(400, 100, 50, 50);

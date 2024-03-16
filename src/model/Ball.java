@@ -26,7 +26,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
         Ball.ballSpeed = ballSpeed;
     }
 
-    public static int ballSpeed = Config.BALL_SPEED;
+    public static int ballSpeed;
     public static Color color = Color.cyan;
     private double degree;
     public Ball(int x, int y){
@@ -34,10 +34,10 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
         this.width = 2*BALL_RADIUS;
         this.height = 2*BALL_RADIUS;
         background = Data.projectData().getBall();
+        ballSpeed = Config.BALL_SPEED;
         speed = ballSpeed;
         xLocation = x;
         degree = Guideline.theta;
-        ballSpeed = Config.BALL_SPEED;
     }
 
     public Ball(int x) {
@@ -122,9 +122,9 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
             }
             if (number == BALL_HIT_LEFT ||
             number == BALL_HIT_RIGHT || number == BALL_HIT_EDGE) {
-                setSpeed( -speed);
+                setSpeed( -getSpeed());
             }
-            //
+            /*
             System.out.print("hit from ");
             switch (number){
                 case BALL_HIT_DOWN -> System.out.println("down");
@@ -133,10 +133,10 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
                 case BALL_HIT_RIGHT -> System.out.println("right");
                 case BALL_HIT_EDGE -> System.out.println("edge");
             }
-            //
+            */
         }
         int newX =getX()+ getXSpeed();
-        setX(Math.min(newX, Application.MAIN_PANEL_WIDTH - 25));
+        setX(Math.min(newX, Application.MAIN_PANEL_WIDTH - 25)); //todo: debug
         int newY =getY()+getYSpeed();
         setY(newY);
         if (getY()> 600){
@@ -152,12 +152,6 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
             setYSpeed0();
         }
     }
-//    @Override
-//    public void paintComponent(Graphics g){
-//        super.paintComponent(g);
-//        Graphics g2D = (Graphics2D) g;
-//        g2D.drawImage(background, getX() , getY(), BALL_RADIUS, BALL_RADIUS, null);
-//    }
 
     @Override
     public void draw(Graphics g) {
