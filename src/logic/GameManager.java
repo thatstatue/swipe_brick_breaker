@@ -1,23 +1,29 @@
 package logic;
 
 import model.Ball;
+import model.Brick;
 import model.Guideline;
 import project.Application;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
+
+import static logic.GamePanel.bricks;
 
 public class GameManager {
     public static GamePanel gamePanel;
     private final JLabel playerName;
     public static int twentyMSs;
     private JToggleButton soundOn;
-    private int score;
+    public static int score;
     public static Timer timer;
     public static boolean ballsOnMove;
-    public static int ballsOnMoveNumber , start15secs;
-    public static boolean count15sec;
+    public static boolean isDance;
+    public static boolean isQuake;
+    public static int ballsOnMoveNumber , start15secs, getStart15secs, start10secs, start10secs2;
+    public static boolean count15sec, isCount15sec, dizzyOn;
 
     public GameManager(String playerName){
         this.playerName = new JLabel( playerName);
@@ -38,8 +44,31 @@ public class GameManager {
         gamePanel.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+
                 Ball first = gamePanel.getFirstBall();
-                Guideline guideline = new Guideline(first.getX(), first.getY(), e.getX(), e.getY());
+                int x = e.getX();
+                int y = e.getY();
+                if (dizzyOn){
+                    x = new Random().nextInt(Config.GAME_WIDTH-20);
+                    y= new Random().nextInt(Config.GAME_HEIGHT-100);
+                }
+                double theta = Math.atan2(y-first.getY(), x-first.getX());
+                boolean hitSegment = false;
+                while (!hitSegment){
+                    x += (int) (3 * Math.cos(theta));
+                    y += (int) (3 * Math.sin(theta));
+                    for (Brick brick : bricks){
+                        if (x >= brick.getX() && x <= brick.getX() + Brick.BRICK_WIDTH
+                                && y >= brick.getY() && y <= brick.getY() + Brick.BRICK_HEIGHT) {
+                            hitSegment = true;
+                            break;
+                        }
+                    }
+                    if (x<=0 || x>=Config.GAME_WIDTH || y<= 0 || y>= 570){
+                        hitSegment = true;
+                    }
+                }
+                Guideline guideline = new Guideline(first.getX(), first.getY(),x,y );
                 gamePanel.setGuideline(guideline);
             }
             @Override
@@ -110,6 +139,19 @@ public class GameManager {
                         }
                         count15sec = false;
                         start15secs = 0;
+                    }
+                }
+                if (isCount15sec){
+                    if (twentyMSs - getStart15secs >= 15 * (1000/Config.DELAY)){
+                        Config.POWER = 1;
+                        isCount15sec = false;
+                        getStart15secs = 0;
+                    }
+                }
+                if (isDance){
+                    if (twentyMSs - start10secs >= 10 * (1000/Config.DELAY)){
+                        isDance = false;
+                        start10secs = 0;
                     }
                 }
                 gamePanel.repaint();
