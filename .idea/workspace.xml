@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18fef8e5-a6da-4fbb-bfe7-d8e9f8ce1530" name="Changes" comment="">
+    <list default="true" id="18fef8e5-a6da-4fbb-bfe7-d8e9f8ce1530" name="Changes" comment="gameover optionpane initiated">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Brick.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/items/Speed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/items/Speed.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Application.java" afterDir="false" />
     </list>
@@ -37,15 +40,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/NoteBook/IdeaProjects/Swipe_Brick_Breaker"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/NoteBook/IdeaProjects/Swipe_Brick_Breaker&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -69,7 +72,29 @@
       <option name="presentableId" value="Default" />
       <updated>1710099872260</updated>
     </task>
+    <task id="LOCAL-00001" summary="bug fixed for speed item">
+      <option name="closed" value="true" />
+      <created>1710630615940</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1710630615940</updated>
+    </task>
+    <task id="LOCAL-00002" summary="gameover optionpane initiated">
+      <option name="closed" value="true" />
+      <created>1710630684219</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1710630684219</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="bug fixed for speed item" />
+    <MESSAGE value="gameover optionpane initiated" />
+    <option name="LAST_COMMIT_MESSAGE" value="gameover optionpane initiated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -85,7 +110,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/logic/GamePanel.java</url>
-          <line>116</line>
+          <line>142</line>
           <properties class="logic.GamePanel" method="nextTurn">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -100,7 +125,7 @@
         <watch expression="Ball.ballSpeed&#10;" language="JAVA" />
         <watch expression="Ball.ballSpeed&#10;" language="JAVA" />
       </configuration>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/model/Ball.java" line="47">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/model/Ball.java" line="44">
         <watch expression="speed" />
       </inline-watch>
     </watches-manager>

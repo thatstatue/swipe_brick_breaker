@@ -1,15 +1,15 @@
 package model;
 
 import graphic.Render;
+import logic.Config;
 import logic.GamePanel;
 
 import java.awt.*;
 
 public class Brick extends Segment {
     int weight;
-    private static final int BRICK_SPEED = 1;
     public static final int BRICK_WIDTH = 98;
-    public static final int BRICK_HEIGHT = 78;
+    public static final int BRICK_HEIGHT = 68;
 
     public void explode(){
         GamePanel.bricks.remove(this);
@@ -28,7 +28,7 @@ public class Brick extends Segment {
 
     public void move(){
 
-        setY(getY()+BRICK_SPEED);
+        setY(getY()+ Config.BRICK_SPEED);
 
     }
 

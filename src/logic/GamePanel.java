@@ -20,7 +20,6 @@ public class GamePanel extends JPanel {
     public static ArrayList<Brick> bricks;
     public static ArrayList<Item> items;
     private Guideline guideline;
-    public ArrayList<Boolean> startedBalls;
 
 
 
@@ -40,14 +39,13 @@ public class GamePanel extends JPanel {
         bricks.add(brick1);
         bricks.add(brick2);
 
-        startedBalls = new ArrayList<>(balls.size());
         newBalls = new ArrayList<>();
         turn = 1;
 
         items = new ArrayList<>();
     }
     private int randX(){
-        int randX = random.nextInt(Application.MAIN_PANEL_WIDTH / Brick.BRICK_WIDTH);
+        int randX = random.nextInt(Config.GAME_WIDTH / Brick.BRICK_WIDTH);
         return randX * Brick.BRICK_WIDTH;
     }
 
@@ -90,7 +88,7 @@ public class GamePanel extends JPanel {
         boolean noMoves = true;
         for (int i = 0 ; i < balls.size(); i ++){
             Ball ball = balls.get(i);
-            if (GameManager.ballsOnMoveNumber >= i*2) {
+            if (GameManager.ballsOnMoveNumber >= Math.max(i , i*(4-(Ball.ballSpeed/9)))) {
                 int deltaX = ball.getX();
                 int deltaY = ball.getY();
                 ball.move();
@@ -112,44 +110,25 @@ public class GamePanel extends JPanel {
             nextTurn();
         }
     }
-    private void nextTurn(){ //todo: improve fps
-        turn ++;
-
-        //balls added
-        int sp = Ball.getBallSpeed();
-        for (int i = 0 ; i < addedBalls; i ++) {
-            Ball ball = new Ball(Ball.xLocation);
-            balls.add(ball);
-        }
-        Ball.setBallSpeed(sp);
-        addedBalls = 1;
-        for (Ball ball : balls){
-            ball.setSpeed(Ball.ballSpeed);
-        }
-
-        //move bricks down one height
-        for (Brick brick: bricks){
-            brick.setY(brick.getY()+ Brick.BRICK_HEIGHT);
-        }
-
+    public void addNewSegments(){
 
         int isAddBall = random.nextInt(turn);
         for (int i = 0 ; i < random.nextInt(3); i++){
             if (isAddBall != turn - 1){
-                int x = random.nextInt(50, Application.MAIN_PANEL_WIDTH - 50);
+                int x = random.nextInt(50, Config.GAME_WIDTH - 50);
                 int y = random.nextInt(50, Ball.yLocation - 50);
                 items.add(new newBall(x, y));
             }
         }
-        if (isAddBall %6 == 0){
-            int x = random.nextInt(50, Application.MAIN_PANEL_WIDTH - 50);
+        if (isAddBall % 6 == 0){
+            int x = random.nextInt(50, Config.GAME_WIDTH - 50);
             int y = random.nextInt(50, Ball.yLocation - 50);
-            items.add(new Speed(x , y));
+            if (!GameManager.count15sec) items.add(new Speed(x , y));
         }
 
-        int rand = random.nextInt(1, 4);
+        int rand = random.nextInt(1, Config.RAND_BOUND_BRICK_NUMBER);
         for (int i = 0 ; i < rand; i++){
-            Brick brick = new Brick(randX(), 10, random.nextInt(3) + turn);
+            Brick brick = new Brick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
             boolean brickOverlap = false;
             for (Brick brick1 : bricks){
                 if (brick1.getX() == brick.getX() && brick1.getY()== 10){
@@ -160,6 +139,20 @@ public class GamePanel extends JPanel {
                 bricks.add(brick);
             }
         }
+    }
+    private void nextTurn(){ //todo: improve fps
+        turn ++;
+        for (int i = 0 ; i < addedBalls; i ++) {
+            Ball ball = new Ball(Ball.xLocation);
+            balls.add(ball);
+        }
+        addedBalls = 1;
+
+        //move bricks down one height
+        for (Brick brick: bricks){
+            brick.setY(brick.getY()+ Brick.BRICK_HEIGHT);
+        }
+
         //todo: play sound
     }
     public Guideline getGuideline() {

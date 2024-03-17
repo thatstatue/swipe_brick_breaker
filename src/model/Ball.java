@@ -26,7 +26,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
         Ball.ballSpeed = ballSpeed;
     }
 
-    public static int ballSpeed;
+    public static int ballSpeed = Config.BALL_SPEED;
     public static Color color = Color.cyan;
     private double degree;
     public Ball(int x, int y){
@@ -34,7 +34,6 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
         this.width = 2*BALL_RADIUS;
         this.height = 2*BALL_RADIUS;
         background = Data.projectData().getBall();
-        ballSpeed = Config.BALL_SPEED;
         speed = ballSpeed;
         xLocation = x;
         degree = Guideline.theta;
@@ -136,7 +135,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
             */
         }
         int newX =getX()+ getXSpeed();
-        setX(Math.min(newX, Application.MAIN_PANEL_WIDTH - 25)); //todo: debug
+        setX(Math.min(newX, Config.GAME_WIDTH - 25)); //todo: debug
         int newY =getY()+getYSpeed();
         setY(newY);
         if (getY()> 600){
@@ -214,11 +213,11 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
 
         if (s1X <= 0){
             return BALL_HIT_LEFT;
-        }else if( s1EndY >= Application.MAIN_PANEL_HEIGHT - 50 ){
+        }else if( s1EndY >= Config.GAME_HEIGHT - 50 ){
             return BALL_HIT_DOWN;
         }else if (s1Y <= 0 ){
             return BALL_HIT_UP;
-        }else if ( s1EndX >= Application.MAIN_PANEL_WIDTH) {
+        }else if ( s1EndX >= Config.GAME_WIDTH) {
             return BALL_HIT_RIGHT;
         }
         int ans = intersectBricks(s1X, s1Y, s1EndX, s1EndY);

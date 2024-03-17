@@ -19,7 +19,8 @@ public class Speed extends Item {
         GameManager.count15sec = true;
         Ball.setBallSpeed(Ball.getBallSpeed() * 2);
         for (Ball ball :GamePanel.balls){
-            ball.setSpeed(Ball.ballSpeed);
+            if (ball.getSpeed()>0) ball.setSpeed(Ball.ballSpeed);
+            else if (ball.getSpeed()<0) ball.setSpeed(-Ball.ballSpeed);
         }
         GamePanel.items.remove(this);
     }
