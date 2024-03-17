@@ -1,10 +1,7 @@
 package logic;
 
 import model.*;
-import model.items.Item;
-import model.items.Speed;
-import model.items.newBall;
-import project.Application;
+import model.items.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -125,10 +122,28 @@ public class GamePanel extends JPanel {
             int y = random.nextInt(50, Ball.yLocation - 50);
             if (!GameManager.count15sec) items.add(new Speed(x , y));
         }
+        if (isAddBall % 7 == 1){
+            int x = random.nextInt(50, Config.GAME_WIDTH - 50);
+            int y = random.nextInt(50, Ball.yLocation - 50);
+            if (!GameManager.isCount15sec) items.add(new Power(x , y));
+        }
+        if (isAddBall % 8 == 5){
+            int x = random.nextInt(50, Config.GAME_WIDTH - 50);
+            int y = random.nextInt(50, Ball.yLocation - 50);
+            if (!GameManager.dizzyOn) items.add(new Dizzy(x , y));
+        }
 
         int rand = random.nextInt(1, Config.RAND_BOUND_BRICK_NUMBER);
         for (int i = 0 ; i < rand; i++){
-            Brick brick = new Brick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
+            Brick brick;
+            int rand2 =random.nextInt(100);
+            if(rand2 % 7 == 1){
+                brick = new DanceBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
+            }else if (rand2 % 8 == 1) {
+                brick = new DanceBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
+            }else{
+                brick = new Brick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
+            }
             boolean brickOverlap = false;
             for (Brick brick1 : bricks){
                 if (brick1.getX() == brick.getX() && brick1.getY()== 10){
@@ -141,6 +156,7 @@ public class GamePanel extends JPanel {
         }
     }
     private void nextTurn(){ //todo: improve fps
+        GameManager.dizzyOn = false;
         turn ++;
         for (int i = 0 ; i < addedBalls; i ++) {
             Ball ball = new Ball(Ball.xLocation);
@@ -177,16 +193,47 @@ public class GamePanel extends JPanel {
 
 //        g2d.setPaint(Color.yellow);
 //        g2d.fillRect(400, 100, 50, 50);
-
-
-        for (Brick brick: bricks) {
-            brick.draw(g);
-        }
-        for (Item item : items){
-            item.draw(g);
-        }
-        for (Ball ball : balls){
-            ball.draw(g);
+        if (GameManager.isDance && GameManager.twentyMSs % 5 ==0){
+            for (Brick brick: bricks) {
+                brick.setColor(new Color(random.nextInt(256),random.nextInt(256),
+                        random.nextInt(256),random.nextInt(256)));
+                brick.draw(g);
+            }
+            for (Item item : items){
+                item.setColor(new Color(random.nextInt(256),random.nextInt(256),
+                        random.nextInt(256),random.nextInt(256)));
+                item.draw(g);
+            }
+            for (Ball ball : balls){
+                ball.setColor(new Color(random.nextInt(256),random.nextInt(256),
+                        random.nextInt(256),random.nextInt(256)));
+                ball.draw(g);
+            }
+            this.setBackground(new Color(random.nextInt(256),random.nextInt(256),
+                    random.nextInt(256),random.nextInt(256)));
+        }else if(GameManager.isDance){
+            for (Brick brick : bricks) {
+                brick.draw(g);
+            }
+            for (Item item : items) {
+                item.draw(g);
+            }
+            for (Ball ball : balls) {
+                ball.draw(g);
+            }
+        }else{
+            this.setBackground(Config.BG_COLOR);
+            for (Brick brick : bricks) {
+                brick.setColor(Config.BRICK_COLOR);
+                brick.draw(g);
+            }
+            for (Item item : items) {
+                item.draw(g);
+            }
+            for (Ball ball : balls) {
+                ball.setColor(Config.BALL_COLOR);
+                ball.draw(g);
+            }
         }
         time.draw(g);
 
