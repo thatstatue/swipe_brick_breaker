@@ -1,18 +1,18 @@
 package model;
 
-public class SpecialBrick extends Brick{
-    private boolean isDance;
-    public SpecialBrick(int x, int y, int weight, boolean isDance) {
+import logic.GameManager;
+
+import java.awt.*;
+
+public class DanceBrick extends Brick{
+    public DanceBrick(int x, int y, int weight) {
         super(x, y, weight);
-        this.isDance = isDance;
+        color = Color.MAGENTA;
     }
     @Override
     public void explode(){
         super.explode();
-        if(isDance){
-            
-        }else{
-
-        }
-    };
+        GameManager.start10secs = GameManager.twentyMSs;
+        GameManager.isDance = true;
+    }
 }
