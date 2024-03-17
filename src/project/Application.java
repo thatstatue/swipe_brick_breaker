@@ -5,6 +5,8 @@ import logic.GameManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Hashtable;
 
 public class Application implements Runnable {
@@ -77,6 +79,30 @@ public class Application implements Runnable {
         jPanel.add(input);
         jPanel.add(setDifficultyState());
 
+        JLabel color = new JLabel("BALL COLOR : ");
+        color.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 21));
+        JComboBox<String> dropdown = new JComboBox<>(new String[]{"Blue", "Green", "Pink", "Yellow" , "Orange"});
+        dropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox<String> src = (JComboBox<String>) e.getSource();
+                System.out.println("bidgt");
+                switch (src.getSelectedIndex()){
+                    case 0 -> Config.BALL_COLOR = Color.BLUE;
+                    case 1 -> Config.BALL_COLOR = Color.GREEN;
+                    case 2 -> Config.BALL_COLOR = Color.PINK;
+                    case 3 -> Config.BALL_COLOR = Color.YELLOW;
+                    case 4 -> Config.BALL_COLOR = Color.ORANGE;
+                }
+            }
+        });
+        color.setBounds(120, 350, 200, 50);
+        dropdown.setBounds(300, 350, 200, 50);
+        dropdown.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 21));
+        jPanel.add(color);
+        jPanel.add(dropdown);
+
+
         JButton confirm = getConfirm(input);
         confirm.setBounds(250, 550, 100, 50);
         jPanel.add(confirm);
@@ -85,7 +111,7 @@ public class Application implements Runnable {
     }
 
     private static JButton getConfirm(JTextField input) {
-        JButton confirm = new JButton("Confirm");
+        JButton confirm = new JButton("Start");
         confirm.addActionListener(e -> {
             if (jPanel!= null) jFrame.remove(jPanel);
             jPanel = new JPanel(new BoxLayout(jPanel, BoxLayout.Y_AXIS));

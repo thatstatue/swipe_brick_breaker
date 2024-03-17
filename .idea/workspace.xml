@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18fef8e5-a6da-4fbb-bfe7-d8e9f8ce1530" name="Changes" comment="gameover optionpane initiated">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/logic/QuakeBrick.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/DanceBrick.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/items/Dizzy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/items/Power.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphic/GameFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphic/Render.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Ball.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Brick.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/items/Speed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/items/Speed.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Application.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,7 +114,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/logic/GamePanel.java</url>
-          <line>142</line>
+          <line>158</line>
           <properties class="logic.GamePanel" method="nextTurn">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

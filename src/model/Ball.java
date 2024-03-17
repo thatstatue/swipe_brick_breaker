@@ -5,13 +5,12 @@ import graphic.Drawable;
 import logic.Config;
 import logic.GamePanel;
 import model.items.Item;
-import project.Application;
+
 
 import java.awt.*;
 
 public class Ball extends Segment implements Drawable, IntersectionControl{
     public static final int BALL_RADIUS = 15;
-    private static final int POWER = 1;
     private static final int BALL_HIT_LEFT = 1;
     private static final int BALL_HIT_RIGHT = 2;
     private static final int BALL_HIT_UP = 3;
@@ -27,7 +26,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
     }
 
     public static int ballSpeed = Config.BALL_SPEED;
-    public static Color color = Color.cyan;
+    public static Color color = Config.BALL_COLOR;
     private double degree;
     public Ball(int x, int y){
         super(x , y);
@@ -37,6 +36,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
         speed = ballSpeed;
         xLocation = x;
         degree = Guideline.theta;
+        color = Config.BALL_COLOR;
     }
 
     public Ball(int x) {
@@ -155,9 +155,10 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
     @Override
     public void draw(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
-        g2D.drawImage(background, getX() , getY(), getWidth(), getHeight(), null);
-//        g2D.setColor(color);
-//        g2D.fillOval(getX(), getY(), BALL_RADIUS, BALL_RADIUS);
+
+//        g2D.drawImage(background, getX() , getY(), getWidth(), getHeight(), null);
+        g2D.setColor(color);
+        g2D.fillOval(getX(), getY(), 2*BALL_RADIUS, 2*BALL_RADIUS);
 
     }
 
@@ -178,10 +179,10 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
                     && s1EndY >= s2Y && s1EndY <= s2EndY;
 
             if (isTopRIn || isTopLIn || isBottRIn || isBottLIn) {
+
+                s2.setWeight(s2.getWeight() - Config.POWER);
                 if (s2.getWeight() <= 1) {
                     s2.explode();
-                } else {
-                    s2.setWeight(s2.getWeight() - POWER);
                 }
                 if (isTopLIn && isBottLIn) {
 
