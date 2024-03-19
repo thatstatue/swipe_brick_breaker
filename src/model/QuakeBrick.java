@@ -1,6 +1,4 @@
-package logic;
-
-import model.Brick;
+package model;
 
 import java.awt.*;
 

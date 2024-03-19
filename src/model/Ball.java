@@ -5,7 +5,6 @@ import graphic.Drawable;
 import logic.Config;
 import logic.GameManager;
 import logic.GamePanel;
-import logic.QuakeBrick;
 import model.items.Item;
 
 

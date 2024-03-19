@@ -169,7 +169,7 @@ public class GamePanel extends JPanel {
             }
         }
     }
-    private void nextTurn(){ //todo: improve fps
+    private void nextTurn(){
         turn ++;
         for (int i = 0 ; i < addedBalls; i ++) {
             Ball ball = new Ball(Ball.xLocation);
@@ -182,8 +182,6 @@ public class GamePanel extends JPanel {
         for (Brick brick: bricks){
             brick.setY(brick.getY()+ Brick.BRICK_HEIGHT);
         }
-
-        //todo: play sound
     }
     public Guideline getGuideline() {
         return guideline;
@@ -254,8 +252,5 @@ public class GamePanel extends JPanel {
         time.draw(g);
 
         if (guideline != null) guideline.draw(g);
-//        for (Drawable piece : Data.segments ){
-//            piece.draw(g2d);
-//        }
     }
 }

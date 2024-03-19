@@ -4,16 +4,16 @@ import logic.Config;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 
-public class ScoreData {
+public class ScoreData implements Serializable {
     private String playerName;
     private int score;
     private String dateFormat;
-    private String ballColor;
     private String getDateTime() {
         DateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
         Date date = new Date();
@@ -34,15 +34,6 @@ public class ScoreData {
         this.score = score;
         this.dateFormat = getDateTime();
     }
-
-    public String getBallColor() {
-        return ballColor;
-    }
-
-    public void setBallColor(String ballColor) {
-        this.ballColor = ballColor;
-    }
-
     public int getScore() {
         return score;
     }

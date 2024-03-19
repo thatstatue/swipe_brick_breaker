@@ -9,6 +9,9 @@ import project.Application;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import static logic.GamePanel.bricks;
@@ -20,6 +23,16 @@ public class GameManager {
     public static int twentyMSs;
 //    private JToggleButton soundOn;
     public static int score;
+    private boolean guideOn;
+
+    public boolean isGuideOn() {
+        return guideOn;
+    }
+
+    public void setGuideOn(boolean guideOn) {
+        this.guideOn = guideOn;
+    }
+
     public static Timer timer;
     public static boolean ballsOnMove;
     public static boolean  dizzyOn;
@@ -27,7 +40,8 @@ public class GameManager {
     public static int start15secsSpeed, start15secsPower, start10secsDance, start10secsQuake;
     public static boolean isSpeed, isPower, isDance, isQuake;
 
-    public GameManager(String playerName){
+    public GameManager(String playerName, boolean guideOn){
+        this.guideOn = guideOn;
         this.playerName = new JLabel( playerName);
         playerScore = new JLabel("SCORE: " + score);
         playerScore.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
@@ -93,7 +107,7 @@ public class GameManager {
                     }
                 }
                 Guideline guideline = new Guideline(first.getX(), first.getY(),x,y );
-                gamePanel.setGuideline(guideline);
+                if (guideOn) gamePanel.setGuideline(guideline);
             }
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -194,8 +208,29 @@ public class GameManager {
     }
     void gameOver(){
         gamePanel.gameOver();
-        if (Application.saveOn && score!=0){
-            Application.scoreBoard.add(new ScoreData(playerName.getText(), score));
+        if (Application.inputSaveOn && score!=0){
+            ScoreData scoreData = new ScoreData(playerName.getText(), score);
+            Application.scoreBoard.add(scoreData);
+            try
+            {
+                //Saving of object in a file
+                FileOutputStream file = new FileOutputStream("file.ser");
+                ObjectOutputStream out = new ObjectOutputStream(file);
+
+                // Method for serialization of object
+                out.writeObject(scoreData);
+
+                out.close();
+                file.close();
+
+                System.out.println("ScoreData has been serialized");
+
+            }
+
+            catch(IOException ex)
+            {
+                ex.printStackTrace();
+            }
         }
         if (score > Application.highScore){
             Application.highScore = score;
