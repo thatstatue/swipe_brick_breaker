@@ -1,5 +1,6 @@
 package model.items;
 
+import logic.Config;
 import logic.GameManager;
 import logic.GamePanel;
 import model.Ball;
@@ -15,9 +16,9 @@ public class Speed extends Item {
 
     @Override
     public void catched() {
-        GameManager.start15secs = GameManager.twentyMSs;
-        GameManager.count15sec = true;
-        Ball.setBallSpeed(Ball.getBallSpeed() * 2);
+        GameManager.start15secsSpeed = GameManager.twentyMSs;
+        GameManager.isSpeed = true;
+        Ball.setBallSpeed(Config.BALL_SPEED * 2);
         for (Ball ball :GamePanel.balls){
             if (ball.getSpeed()>0) ball.setSpeed(Ball.ballSpeed);
             else if (ball.getSpeed()<0) ball.setSpeed(-Ball.ballSpeed);

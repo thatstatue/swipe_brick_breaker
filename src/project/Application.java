@@ -1,23 +1,57 @@
 package project;
 
+import graphic.ScoreData;
 import logic.Config;
 import logic.GameManager;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Application implements Runnable {
 
     public static int highScore;
-
+    public static ArrayList<ScoreData> scoreBoard = new ArrayList<>();
+    public static boolean saveOn = true;
+    private static JPanel data;
     public static JFrame jFrame;
     public static JPanel jPanel;
     private static GameManager gameManager;
     private static void showScoreBoard(){
-        //todo
+        if (jPanel!= null) jFrame.remove(jPanel);
+        jPanel = new JPanel(null);
+
+        String[] options= new String[scoreBoard.size()+1];
+        options[0] = "-Select a Game-";
+        int i = 1;
+        for (ScoreData scoreData : scoreBoard){
+            options[i] = scoreData.toString();
+            i++;
+        }
+        JComboBox<String> dropdown = new JComboBox<>(options);
+
+        dropdown.addActionListener(e -> {
+            JComboBox<String> src = (JComboBox<String>) e.getSource();
+            if (data!=null) jPanel.remove(data);
+            data = new JPanel(null);
+            data = scoreBoard.get(src.getSelectedIndex() - 1).showInfo();
+            jPanel.add(data);
+            jPanel.repaint();
+
+        });
+
+        dropdown.setBounds(100, 100, 400, 60);
+        dropdown.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+        jPanel.add(dropdown);
+
+
+
+        JButton back = new JButton("Back to Menu");
+        back.setBounds(200, 600, 200, 50);
+        back.addActionListener(e -> showUI());
+        jPanel.add(back);
+        jFrame.add(jPanel);
+        jFrame.setVisible(true);
     }
     private static void showSettings(){
         //todo
@@ -26,12 +60,13 @@ public class Application implements Runnable {
 
     @Override
     public void run() {
-        jFrame = new JFrame("Main");
+        jFrame = new JFrame("Swipe Brick Breaker");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(new Dimension(Config.GAME_WIDTH, Config.GAME_HEIGHT));
         jFrame.setLocationRelativeTo(null);
         jPanel = (JPanel) jFrame.getContentPane();
         jFrame.setResizable(false);
+
         showUI();
     }
 
@@ -81,19 +116,16 @@ public class Application implements Runnable {
 
         JLabel color = new JLabel("BALL COLOR : ");
         color.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 21));
-        JComboBox<String> dropdown = new JComboBox<>(new String[]{"Blue", "Green", "Pink", "Yellow" , "Orange"});
-        dropdown.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComboBox<String> src = (JComboBox<String>) e.getSource();
-                System.out.println("bidgt");
-                switch (src.getSelectedIndex()){
-                    case 0 -> Config.BALL_COLOR = Color.BLUE;
-                    case 1 -> Config.BALL_COLOR = Color.GREEN;
-                    case 2 -> Config.BALL_COLOR = Color.PINK;
-                    case 3 -> Config.BALL_COLOR = Color.YELLOW;
-                    case 4 -> Config.BALL_COLOR = Color.ORANGE;
-                }
+        JComboBox<String> dropdown = new JComboBox<>(
+                new String[]{"Blue", "Green", "Pink", "Yellow" , "Orange"});
+        dropdown.addActionListener(e -> {
+            JComboBox<String> src = (JComboBox<String>) e.getSource();
+            switch (src.getSelectedIndex()){
+                case 0 -> Config.BALL_COLOR = Color.BLUE;
+                case 1 -> Config.BALL_COLOR = Color.GREEN;
+                case 2 -> Config.BALL_COLOR = Color.PINK;
+                case 3 -> Config.BALL_COLOR = Color.YELLOW;
+                case 4 -> Config.BALL_COLOR = Color.ORANGE;
             }
         });
         color.setBounds(120, 350, 200, 50);
@@ -161,6 +193,4 @@ public class Application implements Runnable {
         jFrame.setVisible(true);
 
     }
-
-//todo: if num of hits > 20 in a sec :
 }

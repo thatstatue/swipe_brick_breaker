@@ -16,9 +16,8 @@ public class Power extends Item {
 
     @Override
     public void catched() {
-        GameManager.getStart15secs = GameManager.twentyMSs;
-        GameManager.isCount15sec = true;
-        Config.POWER = 2;
+        GameManager.start15secsPower = GameManager.twentyMSs;
+        GameManager.isPower = true;
         GamePanel.items.remove(this);
     }
     @Override

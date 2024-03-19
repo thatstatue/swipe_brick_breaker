@@ -3,13 +3,15 @@ package model;
 import graphic.Data;
 import graphic.Drawable;
 import logic.Config;
+import logic.GameManager;
 import logic.GamePanel;
+import logic.QuakeBrick;
 import model.items.Item;
 
 
 import java.awt.*;
 
-public class Ball extends Segment implements Drawable, IntersectionControl{
+public class Ball extends Segment implements Drawable, IntersectionControl {
     public static final int BALL_RADIUS = 15;
     private static final int BALL_HIT_LEFT = 1;
     private static final int BALL_HIT_RIGHT = 2;
@@ -28,10 +30,11 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
     public static int ballSpeed = Config.BALL_SPEED;
     public static Color color = Config.BALL_COLOR;
     private double degree;
-    public Ball(int x, int y){
-        super(x , y);
-        this.width = 2*BALL_RADIUS;
-        this.height = 2*BALL_RADIUS;
+
+    public Ball(int x, int y) {
+        super(x, y);
+        this.width = 2 * BALL_RADIUS;
+        this.height = 2 * BALL_RADIUS;
         background = Data.projectData().getBall();
         speed = ballSpeed;
         xLocation = x;
@@ -42,6 +45,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
     public Ball(int x) {
         this(x, yLocation);
     }
+
     private int speed;
     private boolean isMoving, isReturning;
 
@@ -53,11 +57,12 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
         isReturning = returning;
     }
 
-    public static int xLocation, yLocation =600;
+    public static int xLocation, yLocation = 600;
 
     public Color getColor() {
         return color;
     }
+
     public void setColor(Color color) {
         Ball.color = color;
     }
@@ -72,12 +77,12 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
 
     public void setYSpeed0() {
         degree = 0;
-        if (getX() > xLocation){
+        if (getX() > xLocation) {
             degree = Math.PI;
         }
         isReturning = true;
         setSpeed(ballSpeed);
-        if (getX() <= xLocation + ballSpeed && getX() >= xLocation - ballSpeed){
+        if (getX() <= xLocation + ballSpeed && getX() >= xLocation - ballSpeed) {
             setX(xLocation);
             setSpeed(0);
             isMoving = false;
@@ -86,10 +91,11 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
 
 
     public int getXSpeed() {
-        return (int)(Math.cos(degree) * speed);
+        return (int) (Math.cos(degree) * speed);
     }
+
     public int getYSpeed() {
-        return (int)(Math.sin(degree) * speed);
+        return (int) (Math.sin(degree) * speed);
     }
 
     public void setSpeed(int speed) {
@@ -108,46 +114,47 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
         this.degree = degree;
     }
 
-    public void move(){
-        if (!isMoving && !isReturning){ //is it redundant?
+    public void move() {
+        if (!isMoving && !isReturning) { //is it redundant?
             degree = Guideline.theta;
             setSpeed(ballSpeed);
             isMoving = true;
         }
         int number = intersects();
-        if (number >=1 && number <=6){
-            if(number!= BALL_HIT_EDGE) {
+        if (number >= 1 && number <= 6) {
+            if (number != BALL_HIT_EDGE) {
                 degree = -degree;
             }
             if (number == BALL_HIT_LEFT ||
-            number == BALL_HIT_RIGHT || number == BALL_HIT_EDGE) {
-                setSpeed( -getSpeed());
+                    number == BALL_HIT_RIGHT || number == BALL_HIT_EDGE) {
+                setSpeed(-getSpeed());
             }
-            /*
+
             System.out.print("hit from ");
-            switch (number){
+            switch (number) {
                 case BALL_HIT_DOWN -> System.out.println("down");
                 case BALL_HIT_UP -> System.out.println("up");
                 case BALL_HIT_LEFT -> System.out.println("left");
                 case BALL_HIT_RIGHT -> System.out.println("right");
                 case BALL_HIT_EDGE -> System.out.println("edge");
             }
-            */
+
         }
-        int newX =getX()+ getXSpeed();
+        int newX = getX() + getXSpeed();
         setX(Math.min(newX, Config.GAME_WIDTH - 25)); //todo: debug
-        int newY =getY()+getYSpeed();
+//        setX(newX);
+        int newY = getY() + getYSpeed();
         setY(newY);
-        if (getY()> 600){
+        if (getY() > 600) {
             setY(600);
-        }else if (isReturning) {
+        } else if (isReturning) {
             if (getX() <= xLocation + ballSpeed && getX() >= xLocation - ballSpeed) {
                 setX(xLocation);
                 setSpeed(0);
                 isMoving = false;
             }
         }
-        if (getY() == 600){
+        if (getY() == 600) {
             setYSpeed0();
         }
     }
@@ -158,13 +165,13 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
 
 //        g2D.drawImage(background, getX() , getY(), getWidth(), getHeight(), null);
         g2D.setColor(color);
-        g2D.fillOval(getX(), getY(), 2*BALL_RADIUS, 2*BALL_RADIUS);
+        g2D.fillOval(getX(), getY(), 2 * BALL_RADIUS, 2 * BALL_RADIUS);
 
     }
 
-    private int intersectBricks(int s1X, int s1Y, int s1EndX, int s1EndY){
+    private int intersectBricks(int s1X, int s1Y, int s1EndX, int s1EndY) {
 
-        for (Brick s2: GamePanel.bricks) {
+        for (Brick s2 : GamePanel.bricks) {
             int s2X = s2.getX();
             int s2Y = s2.getY();
             int s2EndX = s2.getWidth() + s2X;
@@ -181,11 +188,17 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
             if (isTopRIn || isTopLIn || isBottRIn || isBottLIn) {
 
                 s2.setWeight(s2.getWeight() - Config.POWER);
-                if (s2.getWeight() <= 1) {
+                if (s2.getWeight() < 1) {
                     s2.explode();
+                    if (s2 instanceof DanceBrick) {
+                        GameManager.start10secsDance = GameManager.twentyMSs;
+                        GameManager.isDance = true;
+                    } else if (s2 instanceof QuakeBrick) {
+                        GameManager.start10secsQuake = GameManager.twentyMSs;
+                        GameManager.isQuake = true;
+                    }
                 }
                 if (isTopLIn && isBottLIn) {
-
                     return BALL_HIT_LEFT;
                 }
                 if (isTopRIn && isBottRIn) {
@@ -197,32 +210,47 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
                 if (isTopRIn && isTopLIn) {
                     return BALL_HIT_UP;
                 }
-
-
                 return BALL_HIT_EDGE;
             }
         }
         return 0;
     }
-    @Override
-    public int intersects() {
 
-        int s1X = getX();
-        int s1Y = getY();
-        int s1EndX = getWidth() + s1X;
-        int s1EndY = getHeight() + s1Y;
+    private int intersectWall(Wall s2, int s1X, int s1Y, int s1EndX, int s1EndY) {
+        int s2X = s2.getX();
+        int s2Y = s2.getY();
+        int s2EndX = s2.getWidth() + s2X;
+        int s2EndY = s2.getHeight() + s2Y;
 
-        if (s1X <= 0){
-            return BALL_HIT_LEFT;
-        }else if( s1EndY >= Config.GAME_HEIGHT - 50 ){
-            return BALL_HIT_DOWN;
-        }else if (s1Y <= 0 ){
-            return BALL_HIT_UP;
-        }else if ( s1EndX >= Config.GAME_WIDTH) {
-            return BALL_HIT_RIGHT;
+        boolean isTopLIn = s1X >= s2X && s1X <= s2EndX
+                && s1Y >= s2Y && s1Y <= s2EndY;
+        boolean isTopRIn = s1EndX >= s2X && s1EndX <= s2EndX
+                && s1Y >= s2Y && s1Y <= s2EndY;
+        boolean isBottLIn = s1X >= s2X && s1X <= s2EndX
+                && s1EndY >= s2Y && s1EndY <= s2EndY;
+        boolean isBottRIn = s1EndX >= s2X && s1EndX <= s2EndX
+                && s1EndY >= s2Y && s1EndY <= s2EndY;
+
+        if (isTopRIn || isTopLIn || isBottRIn || isBottLIn) {
+            if (isTopLIn && isBottLIn) {
+                return BALL_HIT_LEFT;
+            }
+            if (isTopRIn && isBottRIn) {
+                return BALL_HIT_RIGHT;
+            }
+            if (isBottRIn && isBottLIn) {
+                return BALL_HIT_DOWN;
+            }
+            if (isTopRIn && isTopLIn) {
+                return BALL_HIT_UP;
+            }
+            return BALL_HIT_EDGE;
         }
-        int ans = intersectBricks(s1X, s1Y, s1EndX, s1EndY);
-        for (int i = 0 ; i < GamePanel.items.size(); i++) {
+        return 0;
+    }
+
+    private void intersectItems(int s1X, int s1Y, int s1EndX, int s1EndY) {
+        for (int i = 0; i < GamePanel.items.size(); i++) {
             Item s2 = GamePanel.items.get(i);
             int s2X = s2.getX();
             int s2Y = s2.getY();
@@ -242,7 +270,31 @@ public class Ball extends Segment implements Drawable, IntersectionControl{
                 s2.catched();
             }
         }
-        return ans;
     }
 
+    @Override
+    public int intersects() {
+
+        int s1X = getX();
+        int s1Y = getY();
+        int s1EndX = getWidth() + s1X;
+        int s1EndY = getHeight() + s1Y;
+
+        int ans = intersectBricks(s1X, s1Y, s1EndX, s1EndY);
+        intersectItems(s1X, s1Y, s1EndX, s1EndY);
+
+        if (ans != 0) return ans;
+        int ans2 = intersectWall(GamePanel.rightWall, s1X, s1Y, s1EndX, s1EndY);
+        int ans1 = intersectWall(GamePanel.leftWall, s1X, s1Y, s1EndX, s1EndY);
+        if (ans1 != 0) return ans1;
+        if (ans2 != 0) return ans2;
+        if (s1EndY >= Config.GAME_HEIGHT - 50) {
+            return BALL_HIT_DOWN;
+        } else if (s1Y <= BALL_RADIUS) {
+            setY(BALL_RADIUS * 2);
+            return BALL_HIT_UP;
+        }
+        return 0;
+
+    }
 }

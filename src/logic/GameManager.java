@@ -1,5 +1,6 @@
 package logic;
 
+import graphic.ScoreData;
 import model.Ball;
 import model.Brick;
 import model.Guideline;
@@ -15,18 +16,39 @@ import static logic.GamePanel.bricks;
 public class GameManager {
     public static GamePanel gamePanel;
     private final JLabel playerName;
+    public static JLabel playerScore;
     public static int twentyMSs;
-    private JToggleButton soundOn;
+//    private JToggleButton soundOn;
     public static int score;
     public static Timer timer;
     public static boolean ballsOnMove;
-    public static boolean isDance;
-    public static boolean isQuake;
-    public static int ballsOnMoveNumber , start15secs, getStart15secs, start10secs, start10secs2;
-    public static boolean count15sec, isCount15sec, dizzyOn;
+    public static boolean  dizzyOn;
+    public static int ballsOnMoveNumber;
+    public static int start15secsSpeed, start15secsPower, start10secsDance, start10secsQuake;
+    public static boolean isSpeed, isPower, isDance, isQuake;
 
     public GameManager(String playerName){
         this.playerName = new JLabel( playerName);
+        playerScore = new JLabel("SCORE: " + score);
+        playerScore.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
+        playerScore.setBounds(200,0,400,30);
+    }
+    private void setDefault(){
+        isSpeed = false;
+        isPower = false;
+        dizzyOn = false;
+        isQuake = false;
+        isDance = false;
+        ballsOnMove = false;
+        start15secsSpeed = 0;
+        start10secsDance = 0;
+        start15secsPower = 0;
+        start10secsQuake = 0;
+        score = 0;
+        playerScore.setText("SCORE: " + score);
+        Config.POWER = 1;
+
+        twentyMSs = 0;
     }
 
     public void playNewGame(){
@@ -34,12 +56,14 @@ public class GameManager {
             Application.jPanel.remove(gamePanel);
         }
         gamePanel = new GamePanel();
+        setDefault();
 
         Application.jPanel.add(gamePanel);
-        playerName.setBounds(5, 0, 400, 30);
+        playerName.setBounds(5, 0, 300, 30);
         playerName.setFont(new Font("New Roman", Font.BOLD, 21));
         playerName.setText(playerName.getText().toUpperCase());
         gamePanel.add(playerName);
+        gamePanel.add(playerScore);
 
         gamePanel.addMouseMotionListener(new MouseMotionListener() {
             @Override
@@ -83,6 +107,7 @@ public class GameManager {
                     gamePanel.setGuideline(null);
                     gamePanel.unReturnBalls();
                     ballsOnMove = true;
+                    if (dizzyOn) dizzyOn = false;
                 }
             }
 
@@ -130,28 +155,31 @@ public class GameManager {
                 if(twentyMSs % (Config.CYCLE * 1000/Config.DELAY) == 0){
                     gamePanel.addNewSegments();
                 }
-                if (count15sec){
-                    if (twentyMSs - start15secs >= 15 * (1000/Config.DELAY)){
+                if (isSpeed){
+                    if (twentyMSs - start15secsSpeed >= 15 * (1000/Config.DELAY)){
                         Ball.ballSpeed = Config.BALL_SPEED;
                         for (Ball ball : gamePanel.getBalls()){
                             if (ball.getSpeed()>0) ball.setSpeed(Ball.ballSpeed);
                             else if (ball.getSpeed()<0) ball.setSpeed(-Ball.ballSpeed);
                         }
-                        count15sec = false;
-                        start15secs = 0;
+                        isSpeed = false;
+                        start15secsSpeed = 0;
                     }
                 }
-                if (isCount15sec){
-                    if (twentyMSs - getStart15secs >= 15 * (1000/Config.DELAY)){
+                if (isPower){
+                    Config.POWER = 2;
+                    if (twentyMSs - start15secsPower >= 15 * (1000/Config.DELAY)){
                         Config.POWER = 1;
-                        isCount15sec = false;
-                        getStart15secs = 0;
+                        isPower = false;
+                        start15secsPower = 0;
                     }
+                }else {
+                    Config.POWER = 1;
                 }
                 if (isDance){
-                    if (twentyMSs - start10secs >= 10 * (1000/Config.DELAY)){
+                    if (twentyMSs - start10secsDance >= 10 * (1000/Config.DELAY)){
                         isDance = false;
-                        start10secs = 0;
+                        start10secsDance = 0;
                     }
                 }
                 gamePanel.repaint();
@@ -159,8 +187,6 @@ public class GameManager {
         });
         timer.start();
         Application.jFrame.setVisible(true);
-
-
     }
 
     public int getStartedNumber() {
@@ -168,10 +194,19 @@ public class GameManager {
     }
     void gameOver(){
         gamePanel.gameOver();
+        if (Application.saveOn && score!=0){
+            Application.scoreBoard.add(new ScoreData(playerName.getText(), score));
+        }
+        if (score > Application.highScore){
+            Application.highScore = score;
+        }
         String ans = showGameOverPopup();
         if (gamePanel!= null) {
             Application.jPanel.remove(gamePanel);
         }
+
+        Ball.setBallSpeed(Config.BALL_SPEED);
+        Config.POWER = 1;
         switch (ans){
             case "New Game" -> playNewGame();
             case "Preferences" -> Application.buildGame();

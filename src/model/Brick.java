@@ -6,14 +6,24 @@ import logic.GamePanel;
 
 import java.awt.*;
 
+import static logic.GameManager.score;
+
 public class Brick extends Segment {
     int weight, initialWeight;
     public static final int BRICK_WIDTH = 98;
     public static final int BRICK_HEIGHT = 68;
 
+    private int scoreFunction(){
+        // initWeight - number of five seconds passed
+        return initialWeight - (GameManager.twentyMSs /(1000/Config.DELAY))/5;
+    }
+
     public void explode(){
         GamePanel.bricks.remove(this);
-        GameManager.score += initialWeight;
+        score += scoreFunction();
+        System.out.println(scoreFunction());
+        System.out.println(score);
+        GameManager.playerScore.setText("SCORE: " + score);
     }
 
 
@@ -45,7 +55,7 @@ public class Brick extends Segment {
     public void draw(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
         g2D.setColor(color);
-        g2D.fillRect(getX(), getY(), BRICK_WIDTH, BRICK_HEIGHT);
+        g2D.fillRect(getX(), getY(), getWidth(), getHeight());
         g2D.setColor(Color.white);
         g2D.setFont(new Font("New Roman", Font.BOLD, 30));
         g2D.drawString(String.valueOf(weight), getX()+33, getY()+45);

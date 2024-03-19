@@ -16,13 +16,16 @@ public class GamePanel extends JPanel {
     public static ArrayList<Ball> balls , newBalls;
     public static ArrayList<Brick> bricks;
     public static ArrayList<Item> items;
+    public static Wall rightWall, leftWall;
     private Guideline guideline;
+    private final JLabel numberOfBalls;
 
 
 
     public GamePanel() {
         setVisible(true);
         setLayout(null);
+        turn = 0;
         random = new Random();
         time = new Time(500, 25);
         balls = new ArrayList<>();
@@ -40,6 +43,15 @@ public class GamePanel extends JPanel {
         turn = 1;
 
         items = new ArrayList<>();
+
+        numberOfBalls = new JLabel("x" + 1);
+        numberOfBalls.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+        numberOfBalls.setBounds(280,620,50,50);
+        this.add(numberOfBalls);
+
+        leftWall = new Wall(-100,-10,100, Config.GAME_HEIGHT + 50);
+        rightWall = new Wall(Config.GAME_WIDTH,-10,100, Config.GAME_HEIGHT + 50);
+
     }
     private int randX(){
         int randX = random.nextInt(Config.GAME_WIDTH / Brick.BRICK_WIDTH);
@@ -120,12 +132,12 @@ public class GamePanel extends JPanel {
         if (isAddBall % 6 == 0){
             int x = random.nextInt(50, Config.GAME_WIDTH - 50);
             int y = random.nextInt(50, Ball.yLocation - 50);
-            if (!GameManager.count15sec) items.add(new Speed(x , y));
+            if (!GameManager.isSpeed) items.add(new Speed(x , y));
         }
         if (isAddBall % 7 == 1){
             int x = random.nextInt(50, Config.GAME_WIDTH - 50);
             int y = random.nextInt(50, Ball.yLocation - 50);
-            if (!GameManager.isCount15sec) items.add(new Power(x , y));
+            if (!GameManager.isPower) items.add(new Power(x , y));
         }
         if (isAddBall % 8 == 5){
             int x = random.nextInt(50, Config.GAME_WIDTH - 50);
@@ -137,17 +149,19 @@ public class GamePanel extends JPanel {
         for (int i = 0 ; i < rand; i++){
             Brick brick;
             int rand2 =random.nextInt(100);
-            if(rand2 % 7 == 1){
-                brick = new DanceBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
-            }else if (rand2 % 8 == 1) {
+            if(rand2 % 15 == 12){
+                brick = new QuakeBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
+            }else if (rand2 % 15 == 7) {
                 brick = new DanceBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
             }else{
                 brick = new Brick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
             }
             boolean brickOverlap = false;
             for (Brick brick1 : bricks){
-                if (brick1.getX() == brick.getX() && brick1.getY()== 10){
+                if (brick1.getX() >= brick.getX() && brick1.getX() <= brick.getX() + Brick.BRICK_WIDTH
+                        && brick1.getY() + Brick.BRICK_HEIGHT >= brick.getY()) {
                     brickOverlap = true;
+                    break;
                 }
             }
             if (!brickOverlap) {
@@ -156,13 +170,13 @@ public class GamePanel extends JPanel {
         }
     }
     private void nextTurn(){ //todo: improve fps
-        GameManager.dizzyOn = false;
         turn ++;
         for (int i = 0 ; i < addedBalls; i ++) {
             Ball ball = new Ball(Ball.xLocation);
             balls.add(ball);
         }
         addedBalls = 1;
+        numberOfBalls.setText("x"+ balls.size());
 
         //move bricks down one height
         for (Brick brick: bricks){
@@ -191,9 +205,7 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
 
-//        g2d.setPaint(Color.yellow);
-//        g2d.fillRect(400, 100, 50, 50);
-        if (GameManager.isDance && GameManager.twentyMSs % 5 ==0){
+        if (GameManager.isDance && GameManager.twentyMSs % 8 ==0){
             for (Brick brick: bricks) {
                 brick.setColor(new Color(random.nextInt(256),random.nextInt(256),
                         random.nextInt(256),random.nextInt(256)));
@@ -225,6 +237,10 @@ public class GamePanel extends JPanel {
             this.setBackground(Config.BG_COLOR);
             for (Brick brick : bricks) {
                 brick.setColor(Config.BRICK_COLOR);
+                if (brick instanceof DanceBrick)
+                    brick.setColor(Config.DANCE_BRICK_COLOR);
+                else if (brick instanceof QuakeBrick)
+                    brick.setColor(Config.QUAKE_BRICK_COLOR);
                 brick.draw(g);
             }
             for (Item item : items) {
