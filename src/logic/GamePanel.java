@@ -3,14 +3,23 @@ package logic;
 import model.*;
 import model.items.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static logic.GameManager.timer;
 
 public class GamePanel extends JPanel {
     private Random random;
     private int turn;
+    private boolean isPause;
     private Time time;
     public static int addedBalls = 1;
     public static ArrayList<Ball> balls , newBalls;
@@ -19,6 +28,7 @@ public class GamePanel extends JPanel {
     public static Wall rightWall, leftWall;
     private Guideline guideline;
     private final JLabel numberOfBalls;
+    private JButton pause;
 
 
 
@@ -48,6 +58,21 @@ public class GamePanel extends JPanel {
         numberOfBalls.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         numberOfBalls.setBounds(280,620,50,50);
         this.add(numberOfBalls);
+
+        try {
+            BufferedImage pbutton = ImageIO.read(new File("button.png"));
+            pause = new JButton(new ImageIcon(pbutton));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        pause.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+        pause.setBounds(50,600,70,70);
+        pause.addActionListener(e -> {
+            if (isPause) timer.start();
+            else timer.stop();
+            isPause = !isPause;
+        });
+        this.add(pause);
 
         leftWall = new Wall(-100,-10,100, Config.GAME_HEIGHT + 50);
         rightWall = new Wall(Config.GAME_WIDTH,-10,100, Config.GAME_HEIGHT + 50);
