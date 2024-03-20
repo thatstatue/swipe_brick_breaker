@@ -213,9 +213,8 @@ public class GameManager {
         timer.start();
         Application.jFrame.setVisible(true);
     }
-
-    public int getStartedNumber() {
-        return ballsOnMoveNumber;
+    public static void moveUpsideBricks(){
+        gamePanel.moveUpsideBricks();
     }
     void gameOver(){
         gamePanel.gameOver();

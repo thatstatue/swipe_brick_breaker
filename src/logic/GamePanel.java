@@ -110,7 +110,11 @@ public class GamePanel extends JPanel {
         this.setBackground(Color.gray);
     }
 
-
+    public void moveUpsideBricks() {
+        for (Brick brick : bricks) {
+            brick.moveUpside();
+        }
+    }
 
     public void moveTime(){
         time.move();
@@ -182,7 +186,7 @@ public class GamePanel extends JPanel {
         }
     }
     public void addNewSegments(){
-
+        //add items
         int isAddBall = random.nextInt(turn);
         for (int i = 0 ; i < random.nextInt(3); i++){
             if (isAddBall != turn - 1){
@@ -206,7 +210,13 @@ public class GamePanel extends JPanel {
             int y = random.nextInt(50, Ball.yLocation - 50);
             if (!GameManager.dizzyOn) items.add(new Dizzy(x , y));
         }
+        if (isAddBall % 11 == 9){
+            int x = random.nextInt(50, Config.GAME_WIDTH - 50);
+            int y = random.nextInt(50, Ball.yLocation - 50);
+            items.add(new Upside(x , y));
+        }
 
+        //add bricks
         int rand = random.nextInt(1, Config.RAND_BOUND_BRICK_NUMBER);
         for (int i = 0 ; i < rand; i++){
             Brick brick;
