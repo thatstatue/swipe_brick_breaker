@@ -82,32 +82,33 @@ public class GameManager {
         gamePanel.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-
-                Ball first = gamePanel.getFirstBall();
-                int x = e.getX();
-                int y = e.getY();
-                if (dizzyOn){
-                    x = new Random().nextInt(Config.GAME_WIDTH-20);
-                    y= new Random().nextInt(Config.GAME_HEIGHT-100);
-                }
-                double theta = Math.atan2(y-first.getY(), x-first.getX());
-                boolean hitSegment = false;
-                while (!hitSegment){
-                    x += (int) (3 * Math.cos(theta));
-                    y += (int) (3 * Math.sin(theta));
-                    for (Brick brick : bricks){
-                        if (x >= brick.getX() && x <= brick.getX() + Brick.BRICK_WIDTH
-                                && y >= brick.getY() && y <= brick.getY() + Brick.BRICK_HEIGHT) {
+                if (!ballsOnMove) {
+                    Ball first = gamePanel.getFirstBall();
+                    int x = e.getX();
+                    int y = e.getY();
+                    if (dizzyOn) {
+                        x = new Random().nextInt(Config.GAME_WIDTH - 20);
+                        y = new Random().nextInt(Config.GAME_HEIGHT - 100);
+                    }
+                    double theta = Math.atan2(y - first.getY(), x - first.getX());
+                    boolean hitSegment = false;
+                    while (!hitSegment) {
+                        x += (int) (3 * Math.cos(theta));
+                        y += (int) (3 * Math.sin(theta));
+                        for (Brick brick : bricks) {
+                            if (x >= brick.getX() && x <= brick.getX() + Brick.BRICK_WIDTH
+                                    && y >= brick.getY() && y <= brick.getY() + Brick.BRICK_HEIGHT) {
+                                hitSegment = true;
+                                break;
+                            }
+                        }
+                        if (x <= 0 || x >= Config.GAME_WIDTH || y <= 0 || y >= 570) {
                             hitSegment = true;
-                            break;
                         }
                     }
-                    if (x<=0 || x>=Config.GAME_WIDTH || y<= 0 || y>= 570){
-                        hitSegment = true;
-                    }
+                    Guideline guideline = new Guideline(first.getX(), first.getY(), x, y);
+                    if (guideOn) gamePanel.setGuideline(guideline);
                 }
-                Guideline guideline = new Guideline(first.getX(), first.getY(),x,y );
-                if (guideOn) gamePanel.setGuideline(guideline);
             }
             @Override
             public void mouseMoved(MouseEvent e) {

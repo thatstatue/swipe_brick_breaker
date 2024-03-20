@@ -75,17 +75,13 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
     }
 
     public void setYSpeed0() {
+        setY(600);
         degree = 0;
+        setSpeed(20);
         if (getX() > xLocation) {
-            degree = Math.PI;
+            setSpeed(-20);
         }
         isReturning = true;
-        setSpeed(ballSpeed);
-        if (getX() <= xLocation + ballSpeed && getX() >= xLocation - ballSpeed) {
-            setX(xLocation);
-            setSpeed(0);
-            isMoving = false;
-        }
     }
 
 
@@ -120,41 +116,40 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
             isMoving = true;
         }
         int number = intersects();
-        if (number >= 1 && number <= 6) {
-            if (number != BALL_HIT_EDGE) {
-                degree = -degree;
-            }
+        if (number >= 1 && number <= 5) {
+            degree = -degree;
             if (number == BALL_HIT_LEFT ||
                     number == BALL_HIT_RIGHT || number == BALL_HIT_EDGE) {
                 setSpeed(-getSpeed());
             }
 
-            System.out.print("hit from ");
-            switch (number) {
-                case BALL_HIT_DOWN -> System.out.println("down");
-                case BALL_HIT_UP -> System.out.println("up");
-                case BALL_HIT_LEFT -> System.out.println("left");
-                case BALL_HIT_RIGHT -> System.out.println("right");
-                case BALL_HIT_EDGE -> System.out.println("edge");
-            }
+//            System.out.print("hit from ");
+//            switch (number) {
+//                case BALL_HIT_DOWN -> System.out.println("down");
+//                case BALL_HIT_UP -> System.out.println("up");
+//                case BALL_HIT_LEFT -> System.out.println("left");
+//                case BALL_HIT_RIGHT -> System.out.println("right");
+//                case BALL_HIT_EDGE -> System.out.println("edge");
+//            }
 
         }
         int newX = getX() + getXSpeed();
-        setX(Math.min(newX, Config.GAME_WIDTH - 25)); //todo: debug
-//        setX(newX);
+        setX(Math.min(newX, Config.GAME_WIDTH - BALL_RADIUS*2));
+        if (getX()<0){
+            setX(1);
+            setDegree(-getDegree());
+            setSpeed(-getSpeed());
+        }
         int newY = getY() + getYSpeed();
         setY(newY);
         if (getY() > 600) {
-            setY(600);
+            setYSpeed0();
         } else if (isReturning) {
             if (getX() <= xLocation + ballSpeed && getX() >= xLocation - ballSpeed) {
                 setX(xLocation);
                 setSpeed(0);
                 isMoving = false;
             }
-        }
-        if (getY() == 600) {
-            setYSpeed0();
         }
     }
 

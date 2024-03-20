@@ -227,15 +227,15 @@ public class Application implements Runnable {
         JLabel color = new JLabel("BALL COLOR : ");
         color.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 21));
         JComboBox<String> dropdown = new JComboBox<>(
-                new String[]{"Blue", "Green", "Pink", "Yellow" , "Orange"});
+                new String[]{"-Select a color-", "Blue", "Green", "Pink", "Yellow" , "Orange"});
         dropdown.addActionListener(e -> {
             JComboBox<String> src = (JComboBox<String>) e.getSource();
             switch (src.getSelectedIndex()){
-                case 0 -> Config.BALL_COLOR = Color.BLUE;
-                case 1 -> Config.BALL_COLOR = Color.GREEN;
-                case 2 -> Config.BALL_COLOR = Color.PINK;
-                case 3 -> Config.BALL_COLOR = Color.YELLOW;
-                case 4 -> Config.BALL_COLOR = Color.ORANGE;
+                case 1 -> Config.BALL_COLOR = Color.BLUE;
+                case 2 -> Config.BALL_COLOR = Color.GREEN;
+                case 3 -> Config.BALL_COLOR = Color.PINK;
+                case 4 -> Config.BALL_COLOR = Color.YELLOW;
+                case 5 -> Config.BALL_COLOR = Color.ORANGE;
             }
         });
         color.setBounds(120, 350, 200, 50);

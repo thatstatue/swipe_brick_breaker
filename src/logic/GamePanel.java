@@ -66,7 +66,7 @@ public class GamePanel extends JPanel {
             throw new RuntimeException(e);
         }
         pause.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-        pause.setBounds(50,600,70,70);
+        pause.setBounds(8,635,70,70);
         pause.addActionListener(e -> {
             if (isPause) timer.start();
             else timer.stop();
