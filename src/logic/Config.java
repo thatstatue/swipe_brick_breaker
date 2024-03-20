@@ -6,7 +6,7 @@ public class Config {
     public static final int GAME_WIDTH = 600;
     public static final int GAME_HEIGHT = 750;
     public static int DELAY = 20;
-    public static int CYCLE = 5;
+    public static int CYCLE = 4;
     public static Color BRICK_COLOR = Color.red;
     public static Color BALL_COLOR = Color.BLUE;
     public static Color DANCE_BRICK_COLOR = Color.MAGENTA;

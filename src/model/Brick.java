@@ -5,6 +5,7 @@ import logic.GameManager;
 import logic.GamePanel;
 
 import java.awt.*;
+import java.util.Random;
 
 import static logic.GameManager.score;
 
@@ -21,8 +22,6 @@ public class Brick extends Segment {
     public void explode(){
         GamePanel.bricks.remove(this);
         score += scoreFunction();
-        System.out.println(scoreFunction());
-        System.out.println(score);
         GameManager.playerScore.setText("SCORE: " + score);
     }
 
@@ -55,6 +54,40 @@ public class Brick extends Segment {
     public void draw(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
         g2D.setColor(color);
+        g2D.fillRect(getX(), getY(), getWidth(), getHeight());
+        g2D.setColor(Color.white);
+        g2D.setFont(new Font("New Roman", Font.BOLD, 30));
+        g2D.drawString(String.valueOf(weight), getX()+33, getY()+45);
+    }
+    public void drawQuake(Graphics g) {
+        Graphics2D g2D = (Graphics2D) g;
+        g2D.setColor(color);
+        Random random = new Random();
+        int add = random.nextInt(10)-5;
+        if ( getWidth() + add <20 || getHeight() + add <20){
+            add = -add;
+            if (getWidth() + add <20 || getHeight() + add <20){
+                setWidth(getWidth()+20);
+                setHeight(getHeight()+20);
+            }
+        }else if (getWidth() + add > BRICK_WIDTH*2.5 || getHeight() + add > BRICK_HEIGHT* 2.5){
+            add = -add;
+            if (getWidth() + add > BRICK_WIDTH*2.5 || getHeight() + add > BRICK_HEIGHT* 2.5){
+                setWidth(getWidth()-5);
+                setHeight(getHeight()-5);
+            }
+        }
+
+        setWidth( getWidth() + add);
+        setHeight( getWidth() + add);
+        setX(getX() - add/2);
+        if (getX()<0){
+            setX(0);
+        }else if (getX()> Config.GAME_WIDTH-getWidth()){
+            setX(Config.GAME_WIDTH-getWidth());
+        }
+        setY(getY() - add/2 );
+
         g2D.fillRect(getX(), getY(), getWidth(), getHeight());
         g2D.setColor(Color.white);
         g2D.setFont(new Font("New Roman", Font.BOLD, 30));

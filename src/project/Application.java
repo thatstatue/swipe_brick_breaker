@@ -193,9 +193,9 @@ public class Application implements Runnable {
         slider.addChangeListener(e -> {
             JSlider source = (JSlider) e.getSource();
             switch (source.getValue()){
-                case 0 -> setDifficulty(20, 1, 5, 4, 3);
-                case 1 -> setDifficulty(25, 2, 4, 5, 4);
-                case 2 -> setDifficulty(20, 2, 3, 6, 5);
+                case 0 -> setDifficulty(20, 1, 4, 4, 3);
+                case 1 -> setDifficulty(25, 2, 3, 5, 4);
+                case 2 -> setDifficulty(20, 2, 2, 6, 5);
             }
 
         });

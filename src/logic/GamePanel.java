@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static logic.GameManager.isQuake;
 import static logic.GameManager.timer;
 
 public class GamePanel extends JPanel {
@@ -97,7 +98,7 @@ public class GamePanel extends JPanel {
     public boolean moveBricks(){
         for (Brick brick : bricks){
             brick.move();
-            if (brick.getY()>= 600- Brick.BRICK_HEIGHT ){
+            if (brick.getY()>= 600- brick.getHeight() ){
                 return true;
             }
         }
@@ -120,12 +121,37 @@ public class GamePanel extends JPanel {
     }
     public void moveBalls(){
         boolean noMoves = true;
+        ArrayList<Integer> removingBalls = new ArrayList<>();
         for (int i = 0 ; i < balls.size(); i ++){
             Ball ball = balls.get(i);
             if (GameManager.ballsOnMoveNumber >= Math.max(i , i*(4-(Ball.ballSpeed/9)))) {
                 int deltaX = ball.getX();
                 int deltaY = ball.getY();
                 ball.move();
+                for (int j = 0 ; j < bricks.size()-1; j++){
+                    Brick brick1 = bricks.get(j);
+                    Brick brick2 = bricks.get(j+1);
+                    int x = ball.getX() + 15;
+                    int y = ball.getY() + 15;
+                    boolean xBetween1 = x >= brick1.getWidth() + brick1.getX()
+                            && x <= brick2.getX();
+
+                    boolean xBetween2 = ball.getX() >= brick2.getWidth() + brick2.getX()
+                            && ball.getX() <= brick1.getX();
+
+                    boolean yBetween1 = y >= brick1.getHeight() + brick1.getY()
+                            && y <= brick2.getY();
+                    boolean yBetween2 = y >= brick2.getHeight() + brick2.getY()
+                            && y <= brick1.getY();
+                    boolean xBricks = Math.abs(brick2.getX()- brick1.getX())<=
+                            2.5*Math.max(brick1.getWidth(), brick2.getWidth());
+                    boolean yBricks = Math.abs(brick2.getY()- brick1.getY())<=
+                            2.5*Math.max(brick1.getHeight(), brick2.getHeight());
+
+                    if ( xBricks && yBricks && (xBetween1 || xBetween2) && (yBetween1 || yBetween2)){
+                        removingBalls.add(i);
+                    }
+                }
                 if (ball.getY() == 600) {
                     newBalls.add(ball);
                     Ball.setxLocation(newBalls.getFirst().getX());
@@ -137,9 +163,14 @@ public class GamePanel extends JPanel {
                 }
             }
         }
+        if (isQuake) {
+            for (Integer i : removingBalls) {
+                System.out.println("EXPLODE!");
+                balls.remove(balls.get(i));
+            }
+        }
         if (noMoves){
             GameManager.ballsOnMove = false;
-            System.out.println("balls are new");
             newBalls = new ArrayList<>();
             nextTurn();
         }
@@ -174,9 +205,9 @@ public class GamePanel extends JPanel {
         for (int i = 0 ; i < rand; i++){
             Brick brick;
             int rand2 =random.nextInt(100);
-            if(rand2 % 15 == 12){
+            if(rand2 % 7 == 3){
                 brick = new QuakeBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
-            }else if (rand2 % 15 == 7) {
+            }else if (rand2 % 7 == 4) {
                 brick = new DanceBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
             }else{
                 brick = new Brick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
@@ -264,7 +295,9 @@ public class GamePanel extends JPanel {
                     brick.setColor(Config.DANCE_BRICK_COLOR);
                 else if (brick instanceof QuakeBrick)
                     brick.setColor(Config.QUAKE_BRICK_COLOR);
-                brick.draw(g);
+                if (isQuake) brick.drawQuake(g);
+                else brick.draw(g);
+
             }
             for (Item item : items) {
                 item.draw(g);

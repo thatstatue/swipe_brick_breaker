@@ -197,6 +197,12 @@ public class GameManager {
                         start10secsDance = 0;
                     }
                 }
+                if (isQuake){
+                    if (twentyMSs - start10secsQuake >= 10 * (1000/Config.DELAY)){
+                        isQuake = false;
+                        start10secsQuake = 0;
+                    }
+                }
                 gamePanel.repaint();
             }
         });

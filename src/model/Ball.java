@@ -123,15 +123,6 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
                 setSpeed(-getSpeed());
             }
 
-//            System.out.print("hit from ");
-//            switch (number) {
-//                case BALL_HIT_DOWN -> System.out.println("down");
-//                case BALL_HIT_UP -> System.out.println("up");
-//                case BALL_HIT_LEFT -> System.out.println("left");
-//                case BALL_HIT_RIGHT -> System.out.println("right");
-//                case BALL_HIT_EDGE -> System.out.println("edge");
-//            }
-
         }
         int newX = getX() + getXSpeed();
         setX(Math.min(newX, Config.GAME_WIDTH - BALL_RADIUS*2));
@@ -156,8 +147,6 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
     @Override
     public void draw(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
-
-//        g2D.drawImage(background, getX() , getY(), getWidth(), getHeight(), null);
         g2D.setColor(color);
         g2D.fillOval(getX(), getY(), 2 * BALL_RADIUS, 2 * BALL_RADIUS);
 
