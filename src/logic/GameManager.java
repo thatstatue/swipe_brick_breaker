@@ -1,6 +1,7 @@
 package logic;
 
 import graphic.ScoreData;
+import graphic.Wrapper;
 import model.Ball;
 import model.Brick;
 import model.Guideline;
@@ -15,9 +16,11 @@ import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import static logic.GamePanel.bricks;
+import static project.Application.scoreBoard;
 
 public class GameManager {
     public static GamePanel gamePanel;
+    private Wrapper wrapper;
     private final JLabel playerName;
     public static JLabel playerScore;
     public static int twentyMSs;
@@ -46,6 +49,7 @@ public class GameManager {
         playerScore = new JLabel("SCORE: " + score);
         playerScore.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
         playerScore.setBounds(200,0,400,30);
+        wrapper = new Wrapper();
     }
     private void setDefault(){
         isSpeed = false;
@@ -217,7 +221,8 @@ public class GameManager {
         gamePanel.gameOver();
         if (Application.inputSaveOn && score!=0){
             ScoreData scoreData = new ScoreData(playerName.getText(), score);
-            Application.scoreBoard.add(scoreData);
+            scoreBoard.add(scoreData);
+            wrapper.setScoreBoard(scoreBoard);
             try
             {
                 //Saving of object in a file
@@ -225,7 +230,8 @@ public class GameManager {
                 ObjectOutputStream out = new ObjectOutputStream(file);
 
                 // Method for serialization of object
-                out.writeObject(scoreData);
+
+                out.writeObject(wrapper);
 
                 out.close();
                 file.close();

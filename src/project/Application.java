@@ -1,6 +1,7 @@
 package project;
 
 import graphic.ScoreData;
+import graphic.Wrapper;
 import logic.Config;
 import logic.GameManager;
 import javax.sound.sampled.AudioInputStream;
@@ -27,19 +28,14 @@ public class Application implements Runnable {
     public static JFrame jFrame;
     public static JPanel jPanel;
     private static GameManager gameManager;
-    private static void showScoreBoard(){
-        if (jPanel!= null) jFrame.remove(jPanel);
-        jPanel = new JPanel(null);
-
-        // Deserialization
+    private void deserialize(){
         try {
             // Reading the object from a file
             FileInputStream file = new FileInputStream("file.ser");
             ObjectInputStream in = new ObjectInputStream(file);
 
-            ScoreData scores= (ScoreData) in.readObject();
-            scoreBoard.add(scores);
-
+            Wrapper wrapper= (Wrapper) in.readObject();
+            scoreBoard = wrapper.getScoreBoard();
 
             in.close();
             file.close();
@@ -48,6 +44,19 @@ public class Application implements Runnable {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+        //set high score
+        if (scoreBoard!=null) {
+            for (ScoreData scoreData : scoreBoard) {
+                if (highScore < scoreData.getScore()){
+                    highScore = scoreData.getScore();
+                }
+            }
+        }
+    }
+    private static void showScoreBoard(){
+        if (jPanel!= null) jFrame.remove(jPanel);
+        jPanel = new JPanel(null);
 
         String[] options= new String[scoreBoard.size()+1];
         options[0] = "-Select a Game-";
@@ -153,17 +162,15 @@ public class Application implements Runnable {
         input.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 21));
         return input;
     }
-
-
-    @Override
-    public void run() {
+    private void initFrame(){
         jFrame = new JFrame("Swipe Brick Breaker");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(new Dimension(Config.GAME_WIDTH, Config.GAME_HEIGHT));
         jFrame.setLocationRelativeTo(null);
         jPanel = (JPanel) jFrame.getContentPane();
         jFrame.setResizable(false);
-
+    }
+    private void setBGMusic(){
         try {
             File file = new File("");
             File soundFile = new File(file.getAbsolutePath() , "BGMusic.wav");
@@ -177,6 +184,13 @@ public class Application implements Runnable {
             soundClip.start();
             soundClip.loop(19);
         };
+    }
+
+    @Override
+    public void run() {
+        initFrame();
+        setBGMusic();
+        deserialize();
         showUI();
     }
 
@@ -202,7 +216,8 @@ public class Application implements Runnable {
         slider.setBounds(150, 230, 300, 50);
         return slider;
     }
-    private static void setDifficulty(int delay , int brickSpeed, int cycle, int randBoundBrickNum, int randBoundBrickWeight){
+    private static void setDifficulty(int delay , int brickSpeed, int cycle,
+                                      int randBoundBrickNum, int randBoundBrickWeight){
         Config.DELAY = delay;
         Config.BRICK_SPEED = brickSpeed;
         Config.CYCLE = cycle;

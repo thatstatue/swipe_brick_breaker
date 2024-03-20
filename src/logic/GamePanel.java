@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 import static logic.GameManager.isQuake;
@@ -164,6 +165,11 @@ public class GamePanel extends JPanel {
             }
         }
         if (isQuake) {
+            removingBalls.sort((o1, o2) -> {
+                if (o1 >o2) return -1;
+                else if (o1 < o2) return 1;
+                return 0;
+            });
             for (Integer i : removingBalls) {
                 System.out.println("EXPLODE!");
                 balls.remove(balls.get(i));
@@ -263,7 +269,8 @@ public class GamePanel extends JPanel {
             for (Brick brick: bricks) {
                 brick.setColor(new Color(random.nextInt(256),random.nextInt(256),
                         random.nextInt(256),random.nextInt(256)));
-                brick.draw(g);
+                if (isQuake) brick.drawQuake(g);
+                else brick.draw(g);
             }
             for (Item item : items){
                 item.setColor(new Color(random.nextInt(256),random.nextInt(256),
@@ -279,7 +286,8 @@ public class GamePanel extends JPanel {
                     random.nextInt(256),random.nextInt(256)));
         }else if(GameManager.isDance){
             for (Brick brick : bricks) {
-                brick.draw(g);
+                if (isQuake) brick.drawQuake(g);
+                else brick.draw(g);
             }
             for (Item item : items) {
                 item.draw(g);
