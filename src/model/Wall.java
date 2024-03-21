@@ -4,7 +4,7 @@ import logic.Config;
 
 import java.awt.*;
 
-public class Wall extends Segment{
+public class Wall extends Segment {
 
     public Wall(int x, int y, int width, int height) {
         super(x, y);

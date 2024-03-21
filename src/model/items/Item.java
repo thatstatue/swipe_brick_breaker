@@ -8,9 +8,10 @@ public abstract class Item extends Segment {
     public Item(int x, int y) {
         super(x, y);
     }
-    public void move(){
 
-        setY(getY()+SPEED);
+    public void move() {
+
+        setY(getY() + SPEED);
 
     }
 

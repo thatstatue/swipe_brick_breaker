@@ -2,27 +2,23 @@ package logic;
 
 import model.*;
 import model.items.*;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Random;
 
 import static logic.GameManager.isQuake;
 import static logic.GameManager.timer;
 
 public class GamePanel extends JPanel {
-    private Random random;
+    private final Random random;
     private int turn;
     private boolean isPause;
-    private Time time;
+    private final Time time;
     public static int addedBalls = 1;
     public static ArrayList<Ball> balls , newBalls;
     public static ArrayList<Brick> bricks;
@@ -30,8 +26,6 @@ public class GamePanel extends JPanel {
     public static Wall rightWall, leftWall;
     private Guideline guideline;
     private final JLabel numberOfBalls;
-    private JButton pause;
-
 
 
     public GamePanel() {
@@ -61,6 +55,7 @@ public class GamePanel extends JPanel {
         numberOfBalls.setBounds(280,620,50,50);
         this.add(numberOfBalls);
 
+        JButton pause;
         try {
             BufferedImage pbutton = ImageIO.read(new File("button.png"));
             pause = new JButton(new ImageIcon(pbutton));
@@ -136,8 +131,8 @@ public class GamePanel extends JPanel {
                 for (int j = 0 ; j < bricks.size()-1; j++){
                     Brick brick1 = bricks.get(j);
                     Brick brick2 = bricks.get(j+1);
-                    int x = ball.getX() + 15;
-                    int y = ball.getY() + 15;
+                    int x = ball.getX() + Ball.BALL_RADIUS;
+                    int y = ball.getY() + Ball.BALL_RADIUS;
                     boolean xBetween1 = x >= brick1.getWidth() + brick1.getX()
                             && x <= brick2.getX();
 
@@ -148,10 +143,14 @@ public class GamePanel extends JPanel {
                             && y <= brick2.getY();
                     boolean yBetween2 = y >= brick2.getHeight() + brick2.getY()
                             && y <= brick1.getY();
-                    boolean xBricks = Math.abs(brick2.getX()- brick1.getX())<=
-                            2.5*Math.max(brick1.getWidth(), brick2.getWidth());
-                    boolean yBricks = Math.abs(brick2.getY()- brick1.getY())<=
-                            2.5*Math.max(brick1.getHeight(), brick2.getHeight());
+                    boolean xBricks = Math.min(
+                            Math.abs(brick2.getX() + brick2.getWidth() - brick1.getX()),
+                            Math.abs(brick2.getX() - brick1.getWidth() - brick1.getX()))
+                            <= 4*Ball.BALL_RADIUS;
+                    boolean yBricks = Math.min(
+                            Math.abs(brick2.getY() + brick2.getHeight() - brick1.getY()),
+                            Math.abs(brick2.getY() - brick1.getHeight() - brick1.getY()))
+                            <= 4*Ball.BALL_RADIUS;
 
                     if ( xBricks && yBricks && (xBetween1 || xBetween2) && (yBetween1 || yBetween2)){
                         removingBalls.add(i);
@@ -159,7 +158,7 @@ public class GamePanel extends JPanel {
                 }
                 if (ball.getY() == 600) {
                     newBalls.add(ball);
-                    Ball.setxLocation(newBalls.getFirst().getX());
+                    Ball.setXLocation(newBalls.getFirst().getX());
                 }
                 deltaX -= ball.getX();
                 deltaY -= ball.getY();
@@ -255,20 +254,12 @@ public class GamePanel extends JPanel {
             brick.setY(brick.getY()+ Brick.BRICK_HEIGHT);
         }
     }
-    public Guideline getGuideline() {
-        return guideline;
-    }
-
     public void setGuideline(Guideline guideline) {
         this.guideline = guideline;
     }
 
     public ArrayList<Ball> getBalls() {
         return balls;
-    }
-
-    public static void setBalls(ArrayList<Ball> balls) {
-        GamePanel.balls = balls;
     }
 
     @Override

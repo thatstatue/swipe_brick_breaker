@@ -1,6 +1,5 @@
 package model;
 
-import graphic.Data;
 import graphic.Drawable;
 import logic.Config;
 import logic.GameManager;
@@ -18,9 +17,6 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
     private static final int BALL_HIT_DOWN = 4;
     private static final int BALL_HIT_EDGE = 5;
 
-    public static int getBallSpeed() {
-        return ballSpeed;
-    }
 
     public static void setBallSpeed(int ballSpeed) {
         Ball.ballSpeed = ballSpeed;
@@ -34,7 +30,6 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
         super(x, y);
         this.width = 2 * BALL_RADIUS;
         this.height = 2 * BALL_RADIUS;
-        background = Data.projectData().getBall();
         speed = ballSpeed;
         xLocation = x;
         degree = Guideline.theta;
@@ -47,10 +42,6 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
 
     private int speed;
     private boolean isMoving, isReturning;
-
-    public boolean isReturning() {
-        return isReturning;
-    }
 
     public void setReturning(boolean returning) {
         isReturning = returning;
@@ -66,11 +57,8 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
         Ball.color = color;
     }
 
-    public static int getxLocation() {
-        return xLocation;
-    }
 
-    public static void setxLocation(int xLocation) {
+    public static void setXLocation(int xLocation) {
         Ball.xLocation = xLocation;
     }
 
@@ -78,9 +66,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
         setY(600);
         degree = 0;
         setSpeed(20);
-        if (getX() > xLocation) {
-            setSpeed(-20);
-        }
+        if (getX() > xLocation) setSpeed(-20);
         isReturning = true;
     }
 
@@ -110,7 +96,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
     }
 
     public void move() {
-        if (!isMoving && !isReturning) { //is it redundant?
+        if (!isMoving && !isReturning) {
             degree = Guideline.theta;
             setSpeed(ballSpeed);
             isMoving = true;
@@ -122,11 +108,10 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
                     number == BALL_HIT_RIGHT || number == BALL_HIT_EDGE) {
                 setSpeed(-getSpeed());
             }
-
         }
         int newX = getX() + getXSpeed();
-        setX(Math.min(newX, Config.GAME_WIDTH - BALL_RADIUS*2));
-        if (getX()<0){
+        setX(Math.min(newX, Config.GAME_WIDTH - BALL_RADIUS * 2));
+        if (getX() < 0) {
             setX(1);
             setDegree(-getDegree());
             setSpeed(-getSpeed());
@@ -149,11 +134,9 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
         Graphics2D g2D = (Graphics2D) g;
         g2D.setColor(color);
         g2D.fillOval(getX(), getY(), 2 * BALL_RADIUS, 2 * BALL_RADIUS);
-
     }
 
     private int intersectBricks(int s1X, int s1Y, int s1EndX, int s1EndY) {
-
         for (Brick s2 : GamePanel.bricks) {
             int s2X = s2.getX();
             int s2Y = s2.getY();
@@ -278,6 +261,5 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
             return BALL_HIT_UP;
         }
         return 0;
-
     }
 }

@@ -30,7 +30,6 @@ public class Application implements Runnable {
     private static GameManager gameManager;
     private void deserialize(){
         try {
-            // Reading the object from a file
             FileInputStream file = new FileInputStream("file.ser");
             ObjectInputStream in = new ObjectInputStream(file);
 
@@ -65,6 +64,18 @@ public class Application implements Runnable {
             options[i] = scoreData.toString();
             i++;
         }
+        JComboBox<String> dropdown = getDropdown(options);
+        jPanel.add(dropdown);
+
+        JButton back = new JButton("Back to Menu");
+        back.setBounds(200, 600, 200, 50);
+        back.addActionListener(e -> showUI());
+        jPanel.add(back);
+        jFrame.add(jPanel);
+        jFrame.setVisible(true);
+    }
+
+    private static JComboBox<String> getDropdown(String[] options) {
         JComboBox<String> dropdown = new JComboBox<>(options);
 
         dropdown.addActionListener(e -> {
@@ -79,17 +90,9 @@ public class Application implements Runnable {
 
         dropdown.setBounds(100, 100, 400, 60);
         dropdown.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
-        jPanel.add(dropdown);
-
-
-
-        JButton back = new JButton("Back to Menu");
-        back.setBounds(200, 600, 200, 50);
-        back.addActionListener(e -> showUI());
-        jPanel.add(back);
-        jFrame.add(jPanel);
-        jFrame.setVisible(true);
+        return dropdown;
     }
+
     private static void showSettings(){
         if (jPanel!= null) jFrame.remove(jPanel);
         jPanel = new JPanel(null);
@@ -183,7 +186,7 @@ public class Application implements Runnable {
         if (inputThemeSong) {
             soundClip.start();
             soundClip.loop(19);
-        };
+        }
     }
 
     @Override
@@ -241,18 +244,7 @@ public class Application implements Runnable {
 
         JLabel color = new JLabel("BALL COLOR : ");
         color.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 21));
-        JComboBox<String> dropdown = new JComboBox<>(
-                new String[]{"-Select a color-", "Blue", "Green", "Pink", "Yellow" , "Orange"});
-        dropdown.addActionListener(e -> {
-            JComboBox<String> src = (JComboBox<String>) e.getSource();
-            switch (src.getSelectedIndex()){
-                case 1 -> Config.BALL_COLOR = Color.BLUE;
-                case 2 -> Config.BALL_COLOR = Color.GREEN;
-                case 3 -> Config.BALL_COLOR = Color.PINK;
-                case 4 -> Config.BALL_COLOR = Color.YELLOW;
-                case 5 -> Config.BALL_COLOR = Color.ORANGE;
-            }
-        });
+        JComboBox<String> dropdown = getColor();
         color.setBounds(120, 350, 200, 50);
         dropdown.setBounds(300, 350, 200, 50);
         dropdown.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 21));
@@ -265,6 +257,22 @@ public class Application implements Runnable {
         jPanel.add(confirm);
         jFrame.add(jPanel);
         jFrame.setVisible(true);
+    }
+
+    private static JComboBox<String> getColor() {
+        JComboBox<String> dropdown = new JComboBox<>(
+                new String[]{"-Select a color-", "Blue", "Green", "Pink", "Yellow" , "Orange"});
+        dropdown.addActionListener(e -> {
+            JComboBox<String> src = (JComboBox<String>) e.getSource();
+            switch (src.getSelectedIndex()){
+                case 1 -> Config.BALL_COLOR = Color.BLUE;
+                case 2 -> Config.BALL_COLOR = Color.GREEN;
+                case 3 -> Config.BALL_COLOR = Color.PINK;
+                case 4 -> Config.BALL_COLOR = Color.YELLOW;
+                case 5 -> Config.BALL_COLOR = Color.ORANGE;
+            }
+        });
+        return dropdown;
     }
 
     private static JButton getConfirm(JTextField input) {

@@ -24,6 +24,6 @@ public class Time extends Segment {
         g2D.setFont(new Font("New Roman", Font.BOLD, 25));
         g2D.setColor(Color.darkGray);
         g2D.drawString(minutes + ":" +
-                (seconds >= 10 ? String.valueOf(seconds) : "0"+ seconds), getX(), getY());
+                (seconds >= 10 ? String.valueOf(seconds) : "0" + seconds), getX(), getY());
     }
 }

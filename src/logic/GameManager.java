@@ -20,38 +20,37 @@ import static project.Application.scoreBoard;
 
 public class GameManager {
     public static GamePanel gamePanel;
-    private Wrapper wrapper;
+    private final Wrapper wrapper;
     private final JLabel playerName;
     public static JLabel playerScore;
     public static int twentyMSs;
-//    private JToggleButton soundOn;
     public static int score;
-    private boolean guideOn;
+    private final boolean guideOn;
 
-    public boolean isGuideOn() {
-        return guideOn;
-    }
-
-    public void setGuideOn(boolean guideOn) {
-        this.guideOn = guideOn;
-    }
 
     public static Timer timer;
     public static boolean ballsOnMove;
-    public static boolean  dizzyOn;
+    public static boolean dizzyOn;
     public static int ballsOnMoveNumber;
     public static int start15secsSpeed, start15secsPower, start10secsDance, start10secsQuake;
     public static boolean isSpeed, isPower, isDance, isQuake;
 
-    public GameManager(String playerName, boolean guideOn){
+    public GameManager(String playerName, boolean guideOn) {
         this.guideOn = guideOn;
-        this.playerName = new JLabel( playerName);
-        playerScore = new JLabel("SCORE: " + score);
-        playerScore.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
-        playerScore.setBounds(200,0,400,30);
+        this.playerName = new JLabel(playerName);
+        playerScore = setPlayerScore();
         wrapper = new Wrapper();
     }
-    private void setDefault(){
+
+    private JLabel setPlayerScore() {
+        JLabel ans = new JLabel("SCORE: " + score);
+        ans.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
+        ans.setBounds(230, 0, 400, 30);
+        return ans;
+    }
+
+    private void setDefault() {
+        Ball.setBallSpeed(Config.BALL_SPEED);
         isSpeed = false;
         isPower = false;
         dizzyOn = false;
@@ -65,12 +64,11 @@ public class GameManager {
         score = 0;
         playerScore.setText("SCORE: " + score);
         Config.POWER = 1;
-
         twentyMSs = 0;
     }
 
-    public void playNewGame(){
-        if (gamePanel!= null) {
+    public void playNewGame() {
+        if (gamePanel != null) {
             Application.jPanel.remove(gamePanel);
         }
         gamePanel = new GamePanel();
@@ -80,6 +78,7 @@ public class GameManager {
         playerName.setBounds(5, 0, 300, 30);
         playerName.setFont(new Font("New Roman", Font.BOLD, 21));
         playerName.setText(playerName.getText().toUpperCase());
+
         gamePanel.add(playerName);
         gamePanel.add(playerScore);
 
@@ -114,6 +113,7 @@ public class GameManager {
                     if (guideOn) gamePanel.setGuideline(guideline);
                 }
             }
+
             @Override
             public void mouseMoved(MouseEvent e) {
                 gamePanel.setGuideline(null);
@@ -152,125 +152,110 @@ public class GameManager {
         });
         Application.jPanel.add(gamePanel);
 
-        timer = new Timer(Config.DELAY, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                twentyMSs ++;
-                if (ballsOnMove){
-                    gamePanel.moveBalls();
-                    ballsOnMoveNumber++;
-                }else {
-                    ballsOnMoveNumber = 0;
-                    boolean isGameOver = gamePanel.moveBricks();
-                    gamePanel.moveItems();
-                    if (isGameOver){
-                        gameOver();
-                    }
+        timer = new Timer(Config.DELAY, e -> {
+            twentyMSs++;
+            if (ballsOnMove) {
+                gamePanel.moveBalls();
+                ballsOnMoveNumber++;
+            } else {
+                ballsOnMoveNumber = 0;
+                boolean isGameOver = gamePanel.moveBricks();
+                gamePanel.moveItems();
+                if (isGameOver) {
+                    gameOver();
+                }
 
-                }
-                if (twentyMSs % (1000/Config.DELAY) == 0){
-                    gamePanel.moveTime();
-                }
-                if(twentyMSs % (Config.CYCLE * 1000/Config.DELAY) == 0){
-                    gamePanel.addNewSegments();
-                }
-                if (isSpeed){
-                    if (twentyMSs - start15secsSpeed >= 15 * (1000/Config.DELAY)){
-                        Ball.ballSpeed = Config.BALL_SPEED;
-                        for (Ball ball : gamePanel.getBalls()){
-                            if (ball.getSpeed()>0) ball.setSpeed(Ball.ballSpeed);
-                            else if (ball.getSpeed()<0) ball.setSpeed(-Ball.ballSpeed);
-                        }
-                        isSpeed = false;
-                        start15secsSpeed = 0;
-                    }
-                }
-                if (isPower){
-                    Config.POWER = 2;
-                    if (twentyMSs - start15secsPower >= 15 * (1000/Config.DELAY)){
-                        Config.POWER = 1;
-                        isPower = false;
-                        start15secsPower = 0;
-                    }
-                }else {
-                    Config.POWER = 1;
-                }
-                if (isDance){
-                    if (twentyMSs - start10secsDance >= 10 * (1000/Config.DELAY)){
-                        isDance = false;
-                        start10secsDance = 0;
-                    }
-                }
-                if (isQuake){
-                    if (twentyMSs - start10secsQuake >= 10 * (1000/Config.DELAY)){
-                        isQuake = false;
-                        start10secsQuake = 0;
-                    }
-                }
-                gamePanel.repaint();
             }
+            if (twentyMSs % (1000 / Config.DELAY) == 0) {
+                gamePanel.moveTime();
+            }
+            if (twentyMSs % (Config.CYCLE * 1000 / Config.DELAY) == 0) {
+                gamePanel.addNewSegments();
+            }
+            if (isSpeed) {
+                if (twentyMSs - start15secsSpeed >= 15 * (1000 / Config.DELAY)) {
+                    Ball.ballSpeed = Config.BALL_SPEED;
+                    for (Ball ball : gamePanel.getBalls()) {
+                        if (ball.getSpeed() > 0) ball.setSpeed(Ball.ballSpeed);
+                        else if (ball.getSpeed() < 0) ball.setSpeed(-Ball.ballSpeed);
+                    }
+                    isSpeed = false;
+                    start15secsSpeed = 0;
+                }
+            }
+            if (isPower) {
+                Config.POWER = 2;
+                if (twentyMSs - start15secsPower >= 15 * (1000 / Config.DELAY)) {
+                    Config.POWER = 1;
+                    isPower = false;
+                    start15secsPower = 0;
+                }
+            } else {
+                Config.POWER = 1;
+            }
+            if (isDance) {
+                if (twentyMSs - start10secsDance >= 10 * (1000 / Config.DELAY)) {
+                    isDance = false;
+                    start10secsDance = 0;
+                }
+            }
+            if (isQuake) {
+                if (twentyMSs - start10secsQuake >= 10 * (1000 / Config.DELAY)) {
+                    isQuake = false;
+                    start10secsQuake = 0;
+                }
+            }
+            gamePanel.repaint();
         });
         timer.start();
         Application.jFrame.setVisible(true);
     }
-    public static void moveUpsideBricks(){
+
+    public static void moveUpsideBricks() {
         gamePanel.moveUpsideBricks();
     }
-    void gameOver(){
+
+    void gameOver() {
         gamePanel.gameOver();
-        if (Application.inputSaveOn && score!=0){
+        if (Application.inputSaveOn && score != 0) {
             ScoreData scoreData = new ScoreData(playerName.getText(), score);
             scoreBoard.add(scoreData);
             wrapper.setScoreBoard(scoreBoard);
-            try
-            {
-                //Saving of object in a file
+            try {
                 FileOutputStream file = new FileOutputStream("file.ser");
                 ObjectOutputStream out = new ObjectOutputStream(file);
 
-                // Method for serialization of object
-
+                //serialization
                 out.writeObject(wrapper);
-
                 out.close();
                 file.close();
 
-                System.out.println("ScoreData has been serialized");
+                System.out.println("Score has been saved");
 
-            }
-
-            catch(IOException ex)
-            {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-        if (score > Application.highScore){
-            Application.highScore = score;
-        }
-        String ans = showGameOverPopup();
-        if (gamePanel!= null) {
-            Application.jPanel.remove(gamePanel);
-        }
 
-        Ball.setBallSpeed(Config.BALL_SPEED);
-        Config.POWER = 1;
-        switch (ans){
+        if (score > Application.highScore) Application.highScore = score;
+
+        String ans = showGameOverPopup();
+        if (gamePanel != null) Application.jPanel.remove(gamePanel);
+
+
+        switch (ans) {
             case "New Game" -> playNewGame();
             case "Preferences" -> Application.buildGame();
-            case "Menu" -> Application.showUI();
+            default -> Application.showUI();
         }
         timer.stop();
     }
+
     public String showGameOverPopup() {
         String[] options = new String[]{"New Game", "Preferences", "Menu"};
         return options[JOptionPane.showOptionDialog(Application.jFrame,
                 "                            GAME OVER", "game status",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION,
-                null, options, "New Game")];
-    }
-
-
-    public void setStartedNumber(int startedNumber) {
-        GameManager.ballsOnMoveNumber = startedNumber;
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, options, "Menu")];
     }
 }
