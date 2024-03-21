@@ -220,9 +220,9 @@ public class GamePanel extends JPanel {
         for (int i = 0 ; i < rand; i++){
             Brick brick;
             int rand2 =random.nextInt(100);
-            if(rand2 % 7 == 3){
+            if(rand2 % 12 == 6){
                 brick = new QuakeBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
-            }else if (rand2 % 7 == 4) {
+            }else if (rand2 % 11 == 4) {
                 brick = new DanceBrick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
             }else{
                 brick = new Brick(randX(), 10, random.nextInt(Config.RAND_BOUND_BRICK_WEIGHT) + turn);
