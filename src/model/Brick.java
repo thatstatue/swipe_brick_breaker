@@ -1,13 +1,12 @@
 package model;
 
-import logic.Config;
-import logic.GameManager;
-import logic.GamePanel;
+import controller.Config;
+import controller.GameManager;
+import controller.GamePanel;
 
 import java.awt.*;
-import java.util.Random;
 
-import static logic.GameManager.score;
+import static controller.GameManager.score;
 
 public class Brick extends Segment {
     int weight, initialWeight, add = 2;
@@ -15,8 +14,8 @@ public class Brick extends Segment {
     public static final int BRICK_HEIGHT = 68;
 
     private int scoreFunction() {
-        // initWeight - number of five seconds passed
-        return initialWeight - (GameManager.twentyMSs / (1000 / Config.DELAY)) / 5;
+        // initWeight - number of ten seconds passed
+        return initialWeight - (GameManager.twentyMSs / (1000 / Config.DELAY)) / 10;
     }
 
     public void explode() {
@@ -59,6 +58,8 @@ public class Brick extends Segment {
     public void draw(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
         g2D.setColor(color);
+        setWidth(BRICK_WIDTH);
+        setHeight(BRICK_HEIGHT);
         g2D.fillRect(getX(), getY(), getWidth(), getHeight());
         g2D.setColor(Color.white);
         g2D.setFont(new Font("New Roman", Font.BOLD, 30));
@@ -70,7 +71,7 @@ public class Brick extends Segment {
         g2D.setColor(color);
 
 
-        if (getHeight() + add < BRICK_HEIGHT / 3) {
+        if (getHeight() + add < BRICK_HEIGHT / 1.3) {
             add = -add;
         } else if (getWidth() + add > BRICK_WIDTH * 1.3) {
             add = -add;
@@ -89,6 +90,6 @@ public class Brick extends Segment {
         g2D.fillRect(getX(), getY(), getWidth(), getHeight());
         g2D.setColor(Color.gray);
         g2D.setFont(new Font("New Roman", Font.BOLD, 30));
-        g2D.drawString(String.valueOf(weight), getX() + 33, getY() + 45);
+        g2D.drawString(String.valueOf(weight), getX() + getWidth()/3, getY() + getHeight()/2);
     }
 }

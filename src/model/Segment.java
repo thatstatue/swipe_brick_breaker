@@ -1,6 +1,6 @@
 package model;
 
-import graphic.Drawable;
+import view.Drawable;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,16 +1,16 @@
 package model;
 
-import graphic.Drawable;
-import logic.Config;
-import logic.GameManager;
-import logic.GamePanel;
+import view.Drawable;
+import controller.Config;
+import controller.GameManager;
+import controller.GamePanel;
 import model.items.Item;
 
 
 import java.awt.*;
 
 public class Ball extends Segment implements Drawable, IntersectionControl {
-    public static final int BALL_RADIUS = 15;
+    public static final int BALL_RADIUS = 12;
     private static final int BALL_HIT_LEFT = 1;
     private static final int BALL_HIT_RIGHT = 2;
     private static final int BALL_HIT_UP = 3;
@@ -97,7 +97,7 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
 
     public void move() {
         if (!isMoving && !isReturning) {
-            degree = Guideline.theta;
+            setDegreeInRange();
             setSpeed(ballSpeed);
             isMoving = true;
         }
@@ -120,13 +120,21 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
         setY(newY);
         if (getY() > 600) {
             setYSpeed0();
-        } else if (isReturning) {
+        }
+        // stop the ball at the correct location
+        if (isReturning) {
             if (getX() <= xLocation + ballSpeed && getX() >= xLocation - ballSpeed) {
                 setX(xLocation);
                 setSpeed(0);
                 isMoving = false;
             }
         }
+    }
+
+    private void setDegreeInRange() {
+        if (degree < Math.PI/2) degree = Math.min(Guideline.theta, -0.15);
+        degree = Math.max(degree, -3);
+        if (degree > Math.PI/2) degree = -3;
     }
 
     @Override

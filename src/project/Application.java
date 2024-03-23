@@ -1,18 +1,17 @@
 package project;
 
-import graphic.ScoreData;
-import graphic.Wrapper;
-import logic.Config;
-import logic.GameManager;
+import view.ScoreData;
+import view.Wrapper;
+import controller.Config;
+import controller.GameManager;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -39,9 +38,9 @@ public class Application implements Runnable {
             in.close();
             file.close();
         }catch (IOException ex){
-            ex.printStackTrace();
+            System.out.println("no readable data");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("no readable data");
         }
 
         //set high score
@@ -176,8 +175,9 @@ public class Application implements Runnable {
     private void setBGMusic(){
         try {
             File file = new File("");
-            File soundFile = new File(file.getAbsolutePath() , "BGMusic.wav");
+            File soundFile = getSoundFile(file);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+
             soundClip = AudioSystem.getClip();
             soundClip.open(audioInputStream);
         } catch (Exception e) {
@@ -187,6 +187,26 @@ public class Application implements Runnable {
             soundClip.start();
             soundClip.loop(19);
         }
+    }
+
+    private static File getSoundFile(File file) throws IOException {
+        File soundFile = new File(file.getAbsolutePath() , "BGMusic.wav");
+        if (!soundFile.exists()){
+            System.out.println("downloading bg music");
+            String fileURL = "https://drive.google.com/file/d/1xG6LX1_IoHH4_8-iqKgeuK-YpzsuskMJ/view?usp=sharing";
+            URL url = new URL(fileURL);
+            URLConnection connection = url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            FileOutputStream fos = new FileOutputStream(soundFile);
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1){
+                fos.write(buffer,0,bytesRead);
+            }
+            fos.close();
+            inputStream.close();
+        }
+        return soundFile;
     }
 
     @Override

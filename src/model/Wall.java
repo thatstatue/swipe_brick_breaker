@@ -1,6 +1,6 @@
 package model;
 
-import logic.Config;
+import controller.Config;
 
 import java.awt.*;
 
