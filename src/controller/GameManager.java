@@ -65,6 +65,7 @@ public class GameManager {
         playerScore.setText("SCORE: " + score);
         Config.POWER = 1;
         twentyMSs = 0;
+        Ball.setXLocation(280);
     }
 
     public void playNewGame() {
@@ -94,13 +95,16 @@ public class GameManager {
                         y = new Random().nextInt(Config.GAME_HEIGHT - 100);
                     }
                     double theta = Math.atan2(y - first.getY(), x - first.getX());
+                    x = first.getX() + (int) (90 * Math.cos(theta));
+                    y = first.getY() + (int) (90 * Math.sin(theta));
+
                     boolean hitSegment = false;
                     while (!hitSegment) {
                         x += (int) (3 * Math.cos(theta));
                         y += (int) (3 * Math.sin(theta));
                         for (Brick brick : bricks) {
-                            if (x >= brick.getX() && x <= brick.getX() + Brick.BRICK_WIDTH
-                                    && y >= brick.getY() && y <= brick.getY() + Brick.BRICK_HEIGHT) {
+                            if (x >= brick.getX() && x <= brick.getX() + brick.getWidth()
+                                    && y >= brick.getY() && y <= brick.getY() + brick.getHeight()) {
                                 hitSegment = true;
                                 break;
                             }

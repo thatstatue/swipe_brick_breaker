@@ -3,9 +3,7 @@ package model.items;
 import controller.Config;
 import controller.GamePanel;
 import model.Ball;
-
 import java.awt.*;
-
 import static controller.GameManager.moveUpsideBricks;
 
 public class Upside extends Item {

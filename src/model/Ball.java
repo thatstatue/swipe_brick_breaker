@@ -26,12 +26,20 @@ public class Ball extends Segment implements Drawable, IntersectionControl {
     public static Color color = Config.BALL_COLOR;
     private double degree;
 
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public void setMoving(boolean moving) {
+        isMoving = moving;
+    }
+
     public Ball(int x, int y) {
         super(x, y);
         this.width = 2 * BALL_RADIUS;
         this.height = 2 * BALL_RADIUS;
         speed = ballSpeed;
-        xLocation = x;
+        //xLocation = x;
         degree = Guideline.theta;
         color = Config.BALL_COLOR;
     }

@@ -13,7 +13,6 @@ public class Speed extends Item {
         this.width = 3 * Ball.BALL_RADIUS;
         this.height = 2 * Ball.BALL_RADIUS;
         this.setColor(Config.SPEED_COLOR);
-
     }
 
     @Override

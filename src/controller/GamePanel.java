@@ -17,7 +17,7 @@ import static controller.GameManager.timer;
 public class GamePanel extends JPanel {
     private final Random random;
     private int turn;
-    private boolean isPause;
+    private boolean isPause, justOnce;
     private final Time time;
     public static int addedBalls = 1;
     public static ArrayList<Ball> balls , newBalls;
@@ -73,6 +73,7 @@ public class GamePanel extends JPanel {
 
         leftWall = new Wall(-100,-10,100, Config.GAME_HEIGHT + 50);
         rightWall = new Wall(Config.GAME_WIDTH,-10,100, Config.GAME_HEIGHT + 50);
+        justOnce = true;
 
     }
     private int randX(){
@@ -147,6 +148,13 @@ public class GamePanel extends JPanel {
                 if (ball.getY() == 600) {
                     newBalls.add(ball);
                     Ball.setXLocation(newBalls.getFirst().getX());
+                    if(justOnce) {
+                        if (ball.getX() == Ball.xLocation) {
+                            ball.setSpeed(0);
+                            ball.setReturning(false);
+                            justOnce = false;
+                        }
+                    }
                 }
             }
         }
@@ -187,11 +195,11 @@ public class GamePanel extends JPanel {
             boolean xBricks = Math.min(
                     Math.abs(brick2.getX() + brick2.getWidth() - brick1.getX()),
                     Math.abs(brick2.getX() - brick1.getWidth() - brick1.getX()))
-                    <= 5 * Ball.BALL_RADIUS;
+                    <= 8 * Ball.BALL_RADIUS;
             boolean yBricks = Math.min(
                     Math.abs(brick2.getY() + brick2.getHeight() - brick1.getY()),
                     Math.abs(brick2.getY() - brick1.getHeight() - brick1.getY()))
-                    <= 5 * Ball.BALL_RADIUS;
+                    <= 8 * Ball.BALL_RADIUS;
 
             if (xBricks && yBricks && (xBetween1 || xBetween2) && (yBetween1 || yBetween2)) {
                 removingBalls.add(i);
