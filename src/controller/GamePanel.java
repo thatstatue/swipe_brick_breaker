@@ -145,16 +145,16 @@ public class GamePanel extends JPanel {
                 }
 
                 //next xLoc
-                if (ball.getY() == 600) {
+                if (ball.getY() >= 600) {
                     newBalls.add(ball);
-                    Ball.setXLocation(newBalls.getFirst().getX());
-                    if(justOnce) {
-                        if (ball.getX() == Ball.xLocation) {
-                            ball.setSpeed(0);
-                            ball.setReturning(false);
-                            justOnce = false;
-                        }
+                    if (Ball.xLocation != newBalls.getFirst().getX()) {
+                        Ball.setXLocation(newBalls.getFirst().getX());
                     }
+//                    if(justOnce) {
+//                        ball.setSpeed(0);
+//                        ball.setReturning(false);
+//                        justOnce = false;
+//                    }
                 }
             }
         }
