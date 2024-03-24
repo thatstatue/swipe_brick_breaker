@@ -101,6 +101,15 @@ public class GamePanel extends JPanel {
         }
         return false;
     }
+    public boolean moveBricksDown(){
+        for (Brick brick : bricks){
+            brick.moveDown();
+            if (brick.getY()>= 600- brick.getHeight() ){
+                return true;
+            }
+        }
+        return false;
+    }
 
     void gameOver(){
         this.setBackground(Color.gray);
@@ -273,9 +282,7 @@ public class GamePanel extends JPanel {
         numberOfBalls.setText("x"+ balls.size());
 
         //move bricks down one height
-        for (Brick brick: bricks){
-            brick.setY(brick.getY()+ Brick.BRICK_HEIGHT);
-        }
+        GameManager.bricksNextTurn = 1;
     }
     public void setGuideline(Guideline guideline) {
         this.guideline = guideline;

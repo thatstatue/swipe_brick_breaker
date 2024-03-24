@@ -31,6 +31,7 @@ public class GameManager {
     public static Timer timer;
     public static boolean ballsOnMove;
     public static boolean dizzyOn;
+    public static int bricksNextTurn;
     public static int ballsOnMoveNumber;
     public static int start15secsSpeed, start15secsPower, start10secsDance, start10secsQuake;
     public static boolean isSpeed, isPower, isDance, isQuake;
@@ -163,12 +164,21 @@ public class GameManager {
                 ballsOnMoveNumber++;
             } else {
                 ballsOnMoveNumber = 0;
-                boolean isGameOver = gamePanel.moveBricks();
-                gamePanel.moveItems();
-                if (isGameOver) {
-                    gameOver();
+                if (bricksNextTurn > 0){
+                    boolean isGameOver = gamePanel.moveBricksDown();
+                    gamePanel.moveItems();
+                    if (isGameOver) {
+                        gameOver();
+                    }
+                    bricksNextTurn ++;
+                    if (bricksNextTurn > 8) bricksNextTurn = 0;
+                }else {
+                    boolean isGameOver = gamePanel.moveBricks();
+                    gamePanel.moveItems();
+                    if (isGameOver) {
+                        gameOver();
+                    }
                 }
-
             }
             if (twentyMSs % (1000 / Config.DELAY) == 0) {
                 gamePanel.moveTime();

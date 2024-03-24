@@ -39,6 +39,11 @@ public class Brick extends Segment {
         setY(getY() + Config.BRICK_SPEED);
 
     }
+    public void moveDown() {
+
+        setY(getY() + BRICK_HEIGHT/7);
+
+    }
 
     public void moveUpside() {
 
